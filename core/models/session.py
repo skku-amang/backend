@@ -13,5 +13,6 @@ class Session(models.Model):
         max_length=6,
     )
     leader = models.ForeignKey(
-        "user.CustomUser", name="세션장", null=True, on_delete=models.SET_NULL
+        "user.CustomUser", name="세션장", null=True, on_delete=models.SET_NULL,
+        related_name="leading_sessions"
     )
