@@ -50,7 +50,9 @@ class UserManager(BaseUserManager):
 
     def create_superuser(self, email, nickname, password):
         user = self.create_user(
-            email=self.normalize_email(email), nickname=nickname, password=password
+            email=self.normalize_email(email),
+            nickname=nickname,
+            password=password,
         )
         user.is_admin = True
         user.is_superuser = True
@@ -77,9 +79,15 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     nickname = models.CharField(blank=True, max_length=20)
     bio = models.TextField(blank=True)
     profile_image = models.ImageField(blank=True)
-    generation = models.ForeignKey("core.Generation", null=True, on_delete=models.PROTECT)
+    generation = models.ForeignKey(
+        "core.Generation", null=True, on_delete=models.PROTECT
+    )
     session = models.ForeignKey("core.Session", null=True, on_delete=models.PROTECT)
-    position = models.CharField(max_length=30, choices=PositionChoices.choices(), default=PositionChoices.MEMBER)
+    position = models.CharField(
+        max_length=30,
+        choices=PositionChoices.choices(),
+        default=PositionChoices.MEMBER,
+    )
     department = models.ForeignKey(Department, null=True, on_delete=models.PROTECT)
     created_datetime = models.DateTimeField(auto_now_add=True)
     updated_datetime = models.DateTimeField(auto_now=True)
