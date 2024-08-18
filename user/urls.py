@@ -8,4 +8,7 @@ urlpatterns = [
         views.UserRetrieveUpdateDestroyAPIView.as_view(),
         name="user-retrieve_update_destroy",
     ),
+
+    path("register/", views.RegisterAPIView.as_view()),
+    path("auth/", views.AuthAPIView.as_view()),
 ]

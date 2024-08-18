@@ -3,7 +3,7 @@ from .models import CustomUser, PositionChoices
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
-    position = serializers.ChoiceField(choices=PositionChoices.choices())
+    position = serializers.ChoiceField(required=False, choices=PositionChoices.choices())
 
     class Meta:
         model = CustomUser
