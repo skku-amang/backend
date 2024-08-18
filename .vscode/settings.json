@@ -2,8 +2,5 @@
   "[python]": {
     "editor.insertSpaces": true,
     "editor.tabSize": 4
-  },
-  "editor.formatOnSave": true,
-  "editor.defaultFormatter": "ms-python.black-formatter",
-  "black-formatter.args": ["--line-length", "79"]
+  }
 }

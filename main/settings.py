@@ -1,9 +1,12 @@
 from datetime import timedelta
+import os
 from pathlib import Path
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = "django-insecure-^n^@+$ntm)wr@qc&vf1djtwuv54))+cvmdd7se$spd_#pd%7*2"
+SECRET_KEY = (
+    "django-insecure-^n^@+$ntm)wr@qc&vf1djtwuv54))+cvmdd7se$spd_#pd%7*2"
+)
 DEBUG = True
 ALLOWED_HOSTS = []
 INTERNAL_IPS = [
@@ -136,6 +139,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = "static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
