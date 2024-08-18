@@ -5,7 +5,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-^n^@+$ntm)wr@qc&vf1djtwuv54))+cvmdd7se$spd_#pd%7*2'
 DEBUG = True
 ALLOWED_HOSTS = []
-
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
 
 # Application definition
 INSTALLED_APPS = [
@@ -20,6 +22,8 @@ INSTALLED_APPS = [
     'core',
     
     'rest_framework',
+    'rest_framework_simplejwt',
+    "debug_toolbar",
 ]
 AUTH_USER_MODEL = 'user.CustomUser'
 MIDDLEWARE = [
@@ -30,6 +34,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 ROOT_URLCONF = 'main.urls'
 TEMPLATES = [
