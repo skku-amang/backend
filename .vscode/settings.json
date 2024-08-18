@@ -3,5 +3,7 @@
     "editor.insertSpaces": true,
     "editor.tabSize": 4
   },
-  "python.analysis.typeCheckingMode": "off"
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "ms-python.black-formatter",
+  "black-formatter.args": ["--line-length", "79"]
 }

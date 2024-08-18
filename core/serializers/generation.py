@@ -5,5 +5,5 @@ from ..models.generation import Generation
 class GenerationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Generation
-        fields = '__all__'
+        fields = "__all__"
         depth = 1

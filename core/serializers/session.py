@@ -5,5 +5,5 @@ from ..models.session import Session
 class SessionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Session
-        fields = '__all__'
+        fields = "__all__"
         depth = 1
