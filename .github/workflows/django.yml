@@ -1,0 +1,46 @@
+name: Django CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [3.11]
+
+    steps:
+      - name: AWS Elastic beanstalk django deployment
+      # You may pin to the exact commit or the version.
+      # uses: Joel-hanson/django-aws-eb-deploy@352a2c5ab6a0c3250174bed4b5686977ff95cba1
+        uses: Joel-hanson/django-aws-eb-deploy@V1.2
+        with:
+          # Do we need to run flake8 linting?
+          flake8: true
+          # The flake8 config path relative to the github repository (this requires input flake8 to be true)
+          flake8_config_file: .flake8
+          # Version range or exact version of a Python version to use, using SemVer's version range syntax.
+          python_version: ${{ matrix.python_version }}
+          # The AWS access key
+          aws_access_key_id: ${{ secrets.aws_access_key_id }}
+          # The AWS secret access key
+          aws_secret_access_key: ${{ secrets.aws_secret_access_key }}
+          # This is the path at which the your django project is located in you github repo
+          django_path: .
+          # Whether to run unit tests
+          unit_testing: false
+          # Minimum code coverage required
+          min_coverage: 0
+          # Deploy to AWS Elastic beanstalk
+          deploy: true
+          # Run unit tests with postgresql
+          postgresql_required: false
+          # Security oriented static analyser for python code using bandit
+          security_check: true
+              
