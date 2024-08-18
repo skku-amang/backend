@@ -10,6 +10,9 @@ class Team(models.Model):
     created_datetime = models.DateTimeField(auto_now_add=True)
     updated_datetime = models.DateTimeField(auto_now=True)
 
+    def __str__(self) -> str:
+        return f"{self.name}({self.leader})"
+
 
 class Song(models.Model):
     name = models.CharField(max_length=255)
@@ -21,3 +24,6 @@ class Song(models.Model):
     team = models.OneToOneField(Team, on_delete=models.CASCADE)
     satisfied_sessions = models.ManyToManyField('Session', related_name="songs_satisfying")
     unsatisfied_sessions = models.ManyToManyField('Session', related_name="songs_unsatisfying")
+
+    def __str__(self) -> str:
+        return f"{self.name}({self.artist})"

@@ -22,6 +22,9 @@ class Department(models.Model):
         related_name="leading_departments",
     )
 
+    def __str__(self) -> str:
+        return self.name
+
 
 class PositionChoices(Enum):
     PRESIDENT = "회장"
@@ -86,3 +89,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         if self.position == PositionChoices.MEMBER:
             return False
         return True
+
+    def __str__(self) -> str:
+        return f"{self.name}({self.generation})"
