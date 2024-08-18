@@ -4,5 +4,5 @@
     "editor.tabSize": 4
   },
   "editor.formatOnSave": true,
-  "editor.defaultFormatter": "ms-python.black-formatter"
+  "python.formatting.blackArgs": ["--line-length", "119"]
 }
