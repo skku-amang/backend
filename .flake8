@@ -1,0 +1,14 @@
+[flake8]
+ignore = E501, W503
+show-source = true
+extend-ignore = E203
+exclude =
+    .git,
+    __pycache__,
+    docs/source/conf.py,
+    old,
+    build,
+    dist,
+    .env,
+    migrations
+max-complexity = 10
