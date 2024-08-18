@@ -3,13 +3,8 @@ import os
 from pathlib import Path
 
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 SECRET_KEY = "django-insecure-^n^@+$ntm)wr@qc&vf1djtwuv54))+cvmdd7se$spd_#pd%7*2"
-DEBUG = True
-ALLOWED_HOSTS = []
-INTERNAL_IPS = [
-    "127.0.0.1",
-]
 
 # Application definition
 INSTALLED_APPS = [
@@ -23,7 +18,6 @@ INSTALLED_APPS = [
     "core",
     "rest_framework",
     "rest_framework_simplejwt",
-    "debug_toolbar",
 ]
 AUTH_USER_MODEL = "user.CustomUser"
 MIDDLEWARE = [
@@ -34,7 +28,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 ROOT_URLCONF = "main.urls"
 TEMPLATES = [
@@ -67,12 +60,7 @@ REST_FRAMEWORK = {
 
 
 # Database
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
+DATABASES = None
 
 
 # Password validation
@@ -129,8 +117,8 @@ SIMPLE_JWT = {
 
 
 # Internationalization
-LANGUAGE_CODE = "en-us"
-TIME_ZONE = "UTC"
+LANGUAGE_CODE = "ko-kr"
+TIME_ZONE = "Asia/Seoul"
 USE_I18N = True
 USE_TZ = True
 
