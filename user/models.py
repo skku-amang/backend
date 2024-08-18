@@ -67,19 +67,18 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_admin = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
-    date_joined = models.DateTimeField(auto_now_add=True)
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
     name = models.CharField(max_length=20)
-    nickname = models.CharField(max_length=20)
-    bio = models.TextField()
-    profile_image = models.ImageField()
-    generation = models.ForeignKey("core.Generation", on_delete=models.PROTECT)
-    session = models.ForeignKey("core.Session", on_delete=models.PROTECT)
-    position = models.CharField(max_length=30, choices=PositionChoices.choices())
-    department = models.ForeignKey(Department, on_delete=models.PROTECT)
-    created_datetime = models.DateTimeField(auto_created=True)
+    nickname = models.CharField(blank=True, max_length=20)
+    bio = models.TextField(blank=True)
+    profile_image = models.ImageField(blank=True)
+    generation = models.ForeignKey("core.Generation", null=True, on_delete=models.PROTECT)
+    session = models.ForeignKey("core.Session", null=True, on_delete=models.PROTECT)
+    position = models.CharField(max_length=30, choices=PositionChoices.choices(), default=PositionChoices.MEMBER)
+    department = models.ForeignKey(Department, null=True, on_delete=models.PROTECT)
+    created_datetime = models.DateTimeField(auto_now_add=True)
     updated_datetime = models.DateTimeField(auto_now=True)
 
     @property
