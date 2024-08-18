@@ -11,8 +11,12 @@ class Session(models.Model):
             ("DRUM", "드럼"),
         ],
         max_length=6,
+        unique=True
     )
     leader = models.ForeignKey(
         "user.CustomUser", name="세션장", null=True, on_delete=models.SET_NULL,
         related_name="leading_sessions"
     )
+
+    def __str__(self) -> str:
+        return self.name
