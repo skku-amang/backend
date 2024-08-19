@@ -5,7 +5,7 @@ from . import base
 BASE_DIR = base.BASE_DIR
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 DEBUG = False
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(",")
 
 # Application definition
 INSTALLED_APPS = base.INSTALLED_APPS + [
