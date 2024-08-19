@@ -1,3 +1,4 @@
+import os
 from . import base
 
 
@@ -47,7 +48,9 @@ USE_TZ = base.USE_TZ
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = base.STATIC_URL
-STATIC_ROOT = base.STATIC_ROOT
+MEDIA_URL = base.MEDIA_URL
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 
 # Default primary key field type

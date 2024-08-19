@@ -8,6 +8,12 @@
       "type": "shell",
       "command": "python manage.py makemigrations;python manage.py migrate",
       "detail": "Django 마이그레이션을 만들고 적용"
+    },
+    {
+      "label": "Django: collectstatic",
+      "type": "shell",
+      "command": "python manage.py collectstatic",
+      "detail": "Django 정적 파일 수집"
     }
   ]
 }

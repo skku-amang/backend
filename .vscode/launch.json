@@ -8,9 +8,7 @@
       "name": "Python 디버거: Django",
       "type": "debugpy",
       "request": "launch",
-      "args": [
-        "runserver"
-      ],
+      "args": ["runserver"],
       "django": true,
       "autoStartBrowser": false,
       "program": "${workspaceFolder}/manage.py"
