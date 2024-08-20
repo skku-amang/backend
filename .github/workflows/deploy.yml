@@ -41,5 +41,5 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
         run: |
-          eb init -p python-${{ matrix.python-version }} my-app --region $AWS_REGION
+          eb init -p python-${{ matrix.python-version }} Amang-Homepage --region ${{ secrets.AWS_REGION }}
           eb deploy
