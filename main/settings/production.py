@@ -72,6 +72,7 @@ AWS_QUERYSTRING_AUTH = False
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = base.STATIC_URL
 MEDIA_URL = base.MEDIA_URL
+STATICFILES_DIRS = base.STATICFILES_DIRS
 
 
 # Default primary key field type

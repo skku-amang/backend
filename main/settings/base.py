@@ -16,6 +16,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "user",
     "core",
+    "template",
+    "drf_yasg",
     "rest_framework",
     "rest_framework_simplejwt",
 ]
@@ -126,6 +128,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = "/static/"
 MEDIA_URL = "/media/"
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "main", "static")]
 
 
 # Default primary key field type
