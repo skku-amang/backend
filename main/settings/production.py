@@ -8,11 +8,11 @@ DEBUG = os.environ.get("DJANGO_DEBUG", False)
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(",")
 
 # Application definition
-INSTALLED_APPS = base.INSTALLED_APPS + [
-    "storages",
-]
+INSTALLED_APPS = base.INSTALLED_APPS + ["storages", "corsheaders"]
 AUTH_USER_MODEL = base.AUTH_USER_MODEL
-MIDDLEWARE = base.MIDDLEWARE
+MIDDLEWARE = base.MIDDLEWARE + [
+    "corsheaders.middleware.CorsMiddleware",
+]
 ROOT_URLCONF = base.ROOT_URLCONF
 TEMPLATES = base.TEMPLATES
 WSGI_APPLICATION = base.WSGI_APPLICATION
@@ -74,6 +74,10 @@ STATIC_URL = base.STATIC_URL
 MEDIA_URL = base.MEDIA_URL
 STATICFILES_DIRS = base.STATICFILES_DIRS
 
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_HEADERS = [
+    "*",
+]
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = base.DEFAULT_AUTO_FIELD

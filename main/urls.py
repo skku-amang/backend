@@ -13,12 +13,10 @@ from drf_yasg import openapi
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="Swagger Study API",
+        title="Amang API",
         default_version="v1",
-        description="Swagger Study를 위한 API 문서",
-        terms_of_service="https://www.google.com/policies/terms/",
-        contact=openapi.Contact(name="test", email="test@test.com"),
-        license=openapi.License(name="Test License"),
+        description="Amang 홈페이지를 위한 API",
+        contact=openapi.Contact(name="JangsuSon", email="manamana32321@gmail.com"),
     ),
     public=True,
     permission_classes=(permissions.AllowAny,),
