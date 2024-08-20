@@ -50,8 +50,8 @@ USE_TZ = base.USE_TZ
 STATIC_URL = base.STATIC_URL
 MEDIA_URL = base.MEDIA_URL
 STATICFILES_DIRS = base.STATICFILES_DIRS
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+STATIC_ROOT = base.STATIC_ROOT
+MEDIA_ROOT = base.MEDIA_ROOT
 
 
 # Default primary key field type
