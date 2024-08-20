@@ -49,6 +49,7 @@ USE_TZ = base.USE_TZ
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = base.STATIC_URL
 MEDIA_URL = base.MEDIA_URL
+STATICFILES_DIRS = base.STATICFILES_DIRS
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
