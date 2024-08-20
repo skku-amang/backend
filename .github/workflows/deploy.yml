@@ -27,6 +27,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Collect static files
+        run: |
+          python manage.py collectstatic --noinput
+
       - name: Install AWS CLI
         run: |
           sudo apt-get update
