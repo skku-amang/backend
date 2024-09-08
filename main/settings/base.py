@@ -49,6 +49,9 @@ TEMPLATES = [
 ]
 WSGI_APPLICATION = "main.wsgi.application"
 REST_FRAMEWORK = {
+    "DEFAULT_FILTER_BACKENDS": [
+        "django_filters.rest_framework.DjangoFilterBackend",
+    ],
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
         # 'rest_framework_simplejwt.authentication.JWTStatelessUserAuthentication',     # DB 조회 없이 토큰에서 User 정보 참조하는 경우
