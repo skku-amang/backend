@@ -6,9 +6,14 @@ BASE_DIR = base.BASE_DIR
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 DEBUG = os.environ.get("DJANGO_DEBUG", False)
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(",")
+API_KEY = os.environ.get("DJANGO_API_KEY")
 
 # Application definition
-INSTALLED_APPS = base.INSTALLED_APPS + ["storages", "corsheaders"]
+INSTALLED_APPS = base.INSTALLED_APPS + [
+    "storages",
+    "corsheaders",
+    "rest_framework_api_key",
+]
 AUTH_USER_MODEL = base.AUTH_USER_MODEL
 MIDDLEWARE = base.MIDDLEWARE + [
     "corsheaders.middleware.CorsMiddleware",
@@ -16,7 +21,9 @@ MIDDLEWARE = base.MIDDLEWARE + [
 ROOT_URLCONF = base.ROOT_URLCONF
 TEMPLATES = base.TEMPLATES
 WSGI_APPLICATION = base.WSGI_APPLICATION
-REST_FRAMEWORK = base.REST_FRAMEWORK
+REST_FRAMEWORK = base.REST_FRAMEWORK + {
+    "DEFAULT_AUTHENTICATION_CLASSES": ("rest_framework_api_key.permissions.HasAPIKey",),
+}
 
 
 # Database
@@ -76,9 +83,17 @@ STATICFILES_DIRS = base.STATICFILES_DIRS
 STATIC_ROOT = base.STATIC_ROOT
 MEDIA_ROOT = base.MEDIA_ROOT
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = os.environ.get("DJANGO_CORS_ALLOWED_ORIGINS").split(",")
 CORS_ALLOW_HEADERS = [
-    "*",
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
 ]
 
 # Default primary key field type
