@@ -22,7 +22,7 @@ ROOT_URLCONF = base.ROOT_URLCONF
 TEMPLATES = base.TEMPLATES
 WSGI_APPLICATION = base.WSGI_APPLICATION
 REST_FRAMEWORK = base.REST_FRAMEWORK | {
-    "DEFAULT_AUTHENTICATION_CLASSES": ("rest_framework_api_key.permissions.HasAPIKey",),
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework_api_key.permissions.HasAPIKey",),
 }
 
 
