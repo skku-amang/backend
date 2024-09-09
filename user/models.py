@@ -77,25 +77,19 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length=20)
     nickname = models.CharField(blank=True, max_length=20)
     bio = models.TextField(blank=True)
-    profile_image = models.ImageField(blank=True)
+    profileImage = models.ImageField(blank=True)
     generation = models.ForeignKey(
         "core.Generation", null=True, on_delete=models.PROTECT
     )
-    session = models.ForeignKey("core.Session", null=True, on_delete=models.PROTECT)
+    sessions = models.ManyToManyField("core.Session", related_name="users")
     position = models.CharField(
         max_length=30,
         choices=PositionChoices.choices(),
         default=PositionChoices.MEMBER,
     )
     department = models.ForeignKey(Department, null=True, on_delete=models.PROTECT)
-    created_datetime = models.DateTimeField(auto_now_add=True)
-    updated_datetime = models.DateTimeField(auto_now=True)
-
-    @property
-    def is_amang_staff(self):
-        if self.position == PositionChoices.MEMBER:
-            return False
-        return True
+    createdDatetime = models.DateTimeField(auto_now_add=True)
+    updatedDatetime = models.DateTimeField(auto_now=True)
 
     def __str__(self) -> str:
         return f"{self.name}({self.generation})"

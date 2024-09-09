@@ -20,6 +20,7 @@ class Session(models.Model):
         on_delete=models.SET_NULL,
         related_name="leading_sessions",
     )
+    icon = models.ImageField(upload_to="session/")
 
     def __str__(self) -> str:
         return self.name
