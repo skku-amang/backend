@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.contrib.auth import views as auth_views
 from django.urls import include, path, re_path
 from debug_toolbar.toolbar import debug_toolbar_urls
 from rest_framework_simplejwt.views import (
@@ -29,6 +30,7 @@ urlpatterns = [
     path("", include("template.urls")),
     path("api/", include("core.urls")),
     path("api/", include("user.urls")),
+    path("login/", auth_views.LoginView.as_view(), name="login"),
 ] + debug_toolbar_urls()
 
 if settings.DEBUG:

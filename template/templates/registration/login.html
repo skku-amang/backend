@@ -1,0 +1,13 @@
+{% extends 'base.html' %} {% block content %}
+<div class="container h-100">
+  <div class="d-flex justify-content-center align-items-center">
+    <div>
+      <h2>로그인</h2>
+      <form method="post">
+        {% csrf_token %} {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">로그인</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -40,18 +40,17 @@ class PositionChoices(Enum):
 class UserManager(BaseUserManager):
     use_in_migrations = True
 
-    def create_user(self, email, nickname, password):
+    def create_user(self, email, password):
         if not email:
             raise ValueError("must have user email")
-        user = self.model(email=self.normalize_email(email), nickname=nickname)
+        user = self.model(email=self.normalize_email(email))
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, nickname, password):
+    def create_superuser(self, email, password):
         user = self.create_user(
             email=self.normalize_email(email),
-            nickname=nickname,
             password=password,
         )
         user.is_admin = True

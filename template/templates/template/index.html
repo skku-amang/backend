@@ -1,34 +1,18 @@
-{% load static %}
+{% extends 'base.html' %} {% block content %}
+<div class="container">
+  <h1
+    class="mb-3 d-flex justify-content-center width-full border rounded mt-3 p-3 shadow"
+  >
+    Amang API
+  </h1>
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Amang API</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="아망 홈페이지를 위한 API" />
-    <meta name="author" content="Amang" />
-    <link rel="icon" href="{% static 'img/Logo.png' %}" type="image/x-icon" />
-    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" />
-  </head>
-  <body>
-    <div class="container">
-      <h1
-        class="mb-3 d-flex justify-content-center width-full border rounded mt-3 p-3 shadow"
-      >
-        Amang API
-      </h1>
-
-      <p>
-        아망 홈페이지의 API 입니다.
-        <a href="{% url 'schema-swagger-ui' %}">Swagger</a>를 통해 쉽게
-        확인하세요.
-      </p>
-      <p>
-        (주의: 모든 엔드포인트가 Open API 형식을 충족시키지는 않습니다. 아직
-        작업 중인 경우, 상세한 정보가 제공되지 않습니다.)
-      </p>
-    </div>
-  </body>
-  <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-</html>
+  <p>
+    아망 홈페이지의 API 입니다.
+    <a href="{% url 'schema-swagger-ui' %}">Swagger</a>를 통해 쉽게 확인하세요.
+  </p>
+  <p>
+    (주의: 모든 엔드포인트가 Open API 형식을 충족시키지는 않습니다. 아직 작업
+    중인 경우, 상세한 정보가 제공되지 않습니다.)
+  </p>
+</div>
+{% endblock %}

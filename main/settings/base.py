@@ -23,7 +23,6 @@ INSTALLED_APPS = [
 ]
 AUTH_USER_MODEL = "user.CustomUser"
 MIDDLEWARE = [
-    "middleware.CustomAPIKeyMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -31,6 +30,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "middleware.CustomAPIKeyOrLoginMiddleware",
 ]
 ROOT_URLCONF = "main.urls"
 TEMPLATES = [
@@ -139,3 +139,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# Default Login
+LOGIN_REDIRECT_URL = "/swagger"
+LOGOUT_REDIRECT_URL = "/login"

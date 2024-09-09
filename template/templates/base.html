@@ -1,0 +1,18 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Amang API</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="아망 홈페이지를 위한 API" />
+    <meta name="author" content="Amang" />
+    <link rel="icon" href="{% static 'img/Logo.png' %}" type="image/x-icon" />
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" />
+  </head>
+  <body>
+    {% block content %} {% endblock %}
+  </body>
+  <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</html>
