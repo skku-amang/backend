@@ -23,6 +23,7 @@ INSTALLED_APPS = [
 ]
 AUTH_USER_MODEL = "user.CustomUser"
 MIDDLEWARE = [
+    "middleware.CustomAPIKeyMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
