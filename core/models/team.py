@@ -31,5 +31,7 @@ class Song(models.Model):
 
 class MemberSession(models.Model):
     session = models.ForeignKey("core.Session", on_delete=models.CASCADE)
-    members = models.ManyToManyField("user.CustomUser", related_name="sessions")
+    members = models.ManyToManyField(
+        "user.CustomUser", related_name="registered_sessions"
+    )
     requiredMemberCount = models.IntegerField()

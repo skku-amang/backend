@@ -14,16 +14,19 @@ class GenerationFilter(django_filters.FilterSet):
 class PerformanceFilter(django_filters.FilterSet):
     class Meta:
         model = Performance
+        exclude = ["representativeImage"]
         fields = "__all__"
 
 
 class SessionFilter(django_filters.FilterSet):
     class Meta:
         model = Session
+        exclude = ["icon"]
         fields = "__all__"
 
 
 class TeamFilter(django_filters.FilterSet):
     class Meta:
         model = Team
+        exclude = ["posterImage"]
         fields = "__all__"
