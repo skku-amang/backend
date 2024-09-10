@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Team(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, blank=True, null=True)
     description = models.TextField(blank=True)
     leader = models.ForeignKey("user.CustomUser", null=True, on_delete=models.SET_NULL)
     performance = models.ForeignKey("Performance", on_delete=models.PROTECT)
@@ -22,7 +22,10 @@ class Team(models.Model):
 
 
 class MemberSession(models.Model):
-    session = models.ForeignKey("core.Session", on_delete=models.CASCADE)
+    team = models.ForeignKey(
+        "core.Team", on_delete=models.CASCADE, related_name="memberSessions"
+    )
+    session = models.ForeignKey("core.Session", on_delete=models.SET_NULL, null=True)
     members = models.ManyToManyField(
         "user.CustomUser", related_name="registered_sessions"
     )

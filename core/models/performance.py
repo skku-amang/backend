@@ -8,6 +8,7 @@ class Performance(models.Model):
     location = models.CharField(max_length=255)
     startDatetime = models.DateTimeField()
     endDatetime = models.DateTimeField()
+
     createdDatetime = models.DateTimeField(auto_now_add=True)
     updatedDatetime = models.DateTimeField(auto_now=True)
 

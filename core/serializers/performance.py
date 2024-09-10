@@ -7,3 +7,4 @@ class PerformanceSerializer(serializers.ModelSerializer):
         model = Performance
         fields = "__all__"
         depth = 1
+        ref_name = "TeamPerformance"
