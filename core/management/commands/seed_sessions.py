@@ -4,7 +4,7 @@ from core.models.session import Session
 
 
 class Command(BaseCommand):
-    help = "밴드 기본 세션(보컬, 기타, 베이스, 드럼, 신디) 생성"
+    help = f"밴드 기본 세션({', '.join(Session.NAME_CHOICES)}) 생성"
 
     def handle(self, *args, **kwargs):
         self.stdout.write("Creating default sessions...")
@@ -15,4 +15,4 @@ class Command(BaseCommand):
                     self.style.SUCCESS(f"Session {name} created successfully.")
                 )
             else:
-                self.stdout.write(self.style.WARNING(f"Session {name} already exists."))
+                self.stdout.write(f"Session {name} skipped as it is already exists.")

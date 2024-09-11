@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Session(models.Model):
-    NAME_CHOICES = ["보컬", "기타", "베이스", "신디", "드럼"]
+    NAME_CHOICES = ["보컬", "기타", "베이스", "신디", "드럼", "현악기", "관악기"]
     name = models.CharField(
         choices=[(name, name) for name in NAME_CHOICES],
         max_length=6,
