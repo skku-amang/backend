@@ -81,9 +81,18 @@ STATICFILES_DIRS = base.STATICFILES_DIRS
 STATIC_ROOT = base.STATIC_ROOT
 MEDIA_ROOT = base.MEDIA_ROOT
 
-# CORS_ALLOWED_ORIGINS = os.environ.get("DJANGO_CORS_ALLOWED_ORIGINS").split(",")
-CORS_ALLOWED_ORIGINS = ["*"]
-CORS_ALLOW_HEADERS = ["*"]
+CORS_ALLOWED_ORIGINS = os.environ.get("DJANGO_CORS_ALLOWED_ORIGINS").split(",")
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = base.DEFAULT_AUTO_FIELD
