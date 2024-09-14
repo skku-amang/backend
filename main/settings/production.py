@@ -15,9 +15,7 @@ INSTALLED_APPS = base.INSTALLED_APPS + [
     "rest_framework_api_key",
 ]
 AUTH_USER_MODEL = base.AUTH_USER_MODEL
-MIDDLEWARE = base.MIDDLEWARE + [
-    "corsheaders.middleware.CorsMiddleware",
-]
+MIDDLEWARE = base.MIDDLEWARE
 ROOT_URLCONF = base.ROOT_URLCONF
 TEMPLATES = base.TEMPLATES
 WSGI_APPLICATION = base.WSGI_APPLICATION
