@@ -32,29 +32,18 @@ class TeamSerializer(serializers.ModelSerializer):
         depth = 1
 
     def create(self, validated_data):
-        print(validated_data)
         memberSessions_data = validated_data.pop("memberSessions")
-
         team = Team.objects.create(**validated_data)
-
         memberSessions = []
+
         for memberSession_data in memberSessions_data:
-            memberSessionUsers = []
-            memberSessionUser_data = memberSession_data.pop("members")
+            members_data = memberSession_data.pop("members")
             session = Session.objects.get(name=memberSession_data["session"]["name"])
             requiredMemberCount = memberSession_data["requiredMemberCount"]
             memberSession = MemberSession.objects.create(
                 team=team, session=session, requiredMemberCount=requiredMemberCount
             )
-            for memberSessionUserData in memberSessionUser_data:
-                memberSessionUser = MemberSessionUser.objects.create(
-                    memberSession=memberSession,
-                    member=memberSessionUserData,
-                )
-                memberSessionUser.save()
-                memberSessionUsers.append(memberSessionUser.id)
-            print(memberSessionUsers)
-            memberSession.members.set(memberSessionUsers)
+            memberSession.members.set(members_data)
             memberSession.save()
             memberSessions.append(memberSession)
 
