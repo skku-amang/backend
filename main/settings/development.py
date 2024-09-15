@@ -54,6 +54,21 @@ STATIC_ROOT = base.STATIC_ROOT
 MEDIA_ROOT = base.MEDIA_ROOT
 
 
+# CORS
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]
+
+
 # Default primary key field type
 DEFAULT_AUTO_FIELD = base.DEFAULT_AUTO_FIELD
 
@@ -61,3 +76,7 @@ DEFAULT_AUTO_FIELD = base.DEFAULT_AUTO_FIELD
 # Default Login
 LOGIN_REDIRECT_URL = base.LOGIN_REDIRECT_URL
 LOGOUT_REDIRECT_URL = base.LOGOUT_REDIRECT_URL
+
+
+# etc
+APPEND_SLASH = base.APPEND_SLASH

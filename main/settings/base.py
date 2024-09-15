@@ -145,3 +145,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Default Login
 LOGIN_REDIRECT_URL = "/swagger"
 LOGOUT_REDIRECT_URL = "/login"
+
+
+# etc
+APPEND_SLASH = False

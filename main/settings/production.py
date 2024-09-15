@@ -79,8 +79,9 @@ STATICFILES_DIRS = base.STATICFILES_DIRS
 STATIC_ROOT = base.STATIC_ROOT
 MEDIA_ROOT = base.MEDIA_ROOT
 
-# CORS_ALLOWED_ORIGINS = os.environ.get("DJANGO_CORS_ALLOWED_ORIGINS").split(",")
-CORS_ALLOW_ALL_ORIGINS = True
+
+# CORS
+CORS_ALLOWED_ORIGINS = os.environ.get("DJANGO_CORS_ALLOWED_ORIGINS").split(",")
 CORS_ALLOW_HEADERS = [
     "accept",
     "accept-encoding",
@@ -93,6 +94,7 @@ CORS_ALLOW_HEADERS = [
     "x-requested-with",
 ]
 
+
 # Default primary key field type
 DEFAULT_AUTO_FIELD = base.DEFAULT_AUTO_FIELD
 
@@ -100,3 +102,7 @@ DEFAULT_AUTO_FIELD = base.DEFAULT_AUTO_FIELD
 # Default Login
 LOGIN_REDIRECT_URL = base.LOGIN_REDIRECT_URL
 LOGOUT_REDIRECT_URL = base.LOGOUT_REDIRECT_URL
+
+
+# etc
+APPEND_SLASH = base.APPEND_SLASH
