@@ -1,9 +1,7 @@
 from rest_framework import serializers
 
 from core.models.session import Session
-from core.models.team import MemberSession, MemberSessionUser
-from core.serializers.performance import PerformanceSerializer
-from user.models import CustomUser
+from core.models.team import MemberSession
 from user.serializers import CustomUserSerializer
 from ..models import Team, Performance
 
