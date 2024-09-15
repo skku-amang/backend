@@ -148,4 +148,4 @@ LOGOUT_REDIRECT_URL = "/login"
 
 
 # etc
-APPEND_SLASH = False
+APPEND_SLASH = True

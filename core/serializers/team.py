@@ -1,8 +1,9 @@
 from rest_framework import serializers
 
 from core.models.session import Session
-from core.models.team import MemberSession
+from core.models.team import MemberSession, MemberSessionUser
 from core.serializers.performance import PerformanceSerializer
+from user.models import CustomUser
 from user.serializers import CustomUserSerializer
 from ..models import Team, Performance
 
@@ -22,8 +23,10 @@ class MemberSessionSerializer(serializers.ModelSerializer):
 
 
 class TeamSerializer(serializers.ModelSerializer):
-    performance = PerformanceSerializer()
     memberSessions = MemberSessionSerializer(many=True)
+    performanceId = serializers.PrimaryKeyRelatedField(
+        queryset=Performance.objects.all(), source="performance"
+    )
 
     class Meta:
         model = Team
@@ -31,21 +34,29 @@ class TeamSerializer(serializers.ModelSerializer):
         depth = 1
 
     def create(self, validated_data):
-        performance_data = validated_data.pop("performance")
+        print(validated_data)
         memberSessions_data = validated_data.pop("memberSessions")
-        performance = Performance.objects.create(**performance_data)
 
-        team = Team.objects.create(performance=performance, **validated_data)
+        team = Team.objects.create(**validated_data)
 
         memberSessions = []
         for memberSession_data in memberSessions_data:
-            members_data = memberSession_data.pop("members")
+            memberSessionUsers = []
+            memberSessionUser_data = memberSession_data.pop("members")
             session = Session.objects.get(name=memberSession_data["session"]["name"])
             requiredMemberCount = memberSession_data["requiredMemberCount"]
             memberSession = MemberSession.objects.create(
                 team=team, session=session, requiredMemberCount=requiredMemberCount
             )
-            memberSession.members.set(members_data)
+            for memberSessionUserData in memberSessionUser_data:
+                memberSessionUser = MemberSessionUser.objects.create(
+                    memberSession=memberSession,
+                    member=memberSessionUserData,
+                )
+                memberSessionUser.save()
+                memberSessionUsers.append(memberSessionUser.id)
+            print(memberSessionUsers)
+            memberSession.members.set(memberSessionUsers)
             memberSession.save()
             memberSessions.append(memberSession)
 
@@ -53,15 +64,6 @@ class TeamSerializer(serializers.ModelSerializer):
         return team
 
     def update(self, instance, validated_data):
-        # Update or create performance
-        performance_data = validated_data.pop("performance")
-        if instance.performance:
-            for attr, value in performance_data.items():
-                setattr(instance.performance, attr, value)
-            instance.performance.save()
-        else:
-            instance.performance = Performance.objects.create(**performance_data)
-
         # Update or create memberSessions
         memberSessions_data = validated_data.pop("memberSessions")
         for memberSession_data in memberSessions_data:
