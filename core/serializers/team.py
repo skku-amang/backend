@@ -8,11 +8,7 @@ from ..models import Team, Performance
 
 class MemberSessionSerializer(serializers.ModelSerializer):
     session = serializers.CharField(source="session.name")
-    members = serializers.PrimaryKeyRelatedField(
-        many=True,
-        # source="members",
-        queryset=CustomUserSerializer.Meta.model.objects.all(),
-    )
+    members = CustomUserSerializer(many=True, required=False, allow_null=True)
 
     class Meta:
         model = MemberSession
