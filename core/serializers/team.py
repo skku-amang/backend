@@ -8,15 +8,17 @@ from ..models import Team, Performance
 
 class MemberSessionSerializer(serializers.ModelSerializer):
     session = serializers.CharField(source="session.name")
-    members = serializers.PrimaryKeyRelatedField(
+    members = CustomUserSerializer(many=True, read_only=True)
+    membersId = serializers.PrimaryKeyRelatedField(
         many=True,
-        # source="members",
         queryset=CustomUserSerializer.Meta.model.objects.all(),
+        write_only=True,
+        source="members",
     )
 
     class Meta:
         model = MemberSession
-        fields = ("id", "session", "members", "requiredMemberCount")
+        fields = ("id", "session", "members", "membersId", "requiredMemberCount")
         ref_name = "TeamMemberSession"
 
 

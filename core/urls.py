@@ -38,4 +38,5 @@ urlpatterns = [
         team.TeamRetrieveUpdateDestroyAPIView.as_view(),
         name="team-retrieve_update_destroy",
     ),
+    path("teams/<int:pk>/apply/", team.TeamApplyAPIView.as_view(), name="team-apply"),
 ]

@@ -92,4 +92,5 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     updatedDatetime = models.DateTimeField(auto_now=True)
 
     def __str__(self) -> str:
-        return f"{self.name}({self.generation})"
+        generation = f"({self.generation})" if self.generation else ""
+        return f"{self.name}{generation}"
