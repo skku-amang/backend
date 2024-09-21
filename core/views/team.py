@@ -9,7 +9,6 @@ from rest_framework import status
 
 from core.models.session import Session
 from core.models.team import Team
-from user.models import CustomUser
 from core.serializers.team import TeamSerializer
 from core.views.filters import TeamFilter
 
@@ -22,7 +21,7 @@ class TeamListCreateAPIView(ListCreateAPIView):
     def get_permissions(self):
         if self.request.method == "POST":
             return [IsAdminUser()]
-        return []
+        return [IsAuthenticated()]
 
 
 class TeamRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
@@ -38,17 +37,17 @@ class TeamRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 class TeamApplyAPIView(GenericAPIView):
     queryset = Team.objects.all()
     serializer_class = TeamSerializer
+    permission_classes = [IsAuthenticated]
 
     def post(self, request, **kwargs):
-        # TODO: requestUser = JWT 토큰에서 읽어야 함
-        requestUser = CustomUser.objects.all()[0]  # 임시 유저
+        print(request.user)
         team = self.get_object()
         session = Session.objects.get(name=request.data.get("session"))
         ms = team.memberSessions.get(session=session)
         oldMemberList = ms.members.all()
         newMembers = list(oldMemberList)
-        if requestUser not in oldMemberList:
-            newMembers.append(requestUser)
+        if request.user not in oldMemberList:
+            newMembers.append(request.user)
         else:
             return Response(
                 {"detail": "세션에 이미 등록된 유저입니다."},
@@ -61,15 +60,14 @@ class TeamApplyAPIView(GenericAPIView):
         return Response(serializer.data)
 
     def delete(self, request, **kwargs):
-        # TODO: requestUser = JWT 토큰에서 읽어야 함
-        requestUser = CustomUser.objects.all()[0]  # 임시 유저
+        print(request.user)
         team = self.get_object()
         session = Session.objects.get(name=request.data.get("session"))
         ms = team.memberSessions.get(session=session)
         oldMemberList = ms.members.all()
         newMembers = list(oldMemberList)
-        if requestUser in oldMemberList:
-            newMembers.remove(requestUser)
+        if request.user in oldMemberList:
+            newMembers.remove(request.user)
         else:
             return Response(
                 {"detail": "세션에 등록되지 않은 유저입니다."},

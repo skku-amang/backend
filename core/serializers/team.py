@@ -14,6 +14,7 @@ class MemberSessionSerializer(serializers.ModelSerializer):
         queryset=CustomUserSerializer.Meta.model.objects.all(),
         write_only=True,
         source="members",
+        required=False,
     )
 
     class Meta:
@@ -35,11 +36,13 @@ class TeamSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         memberSessions_data = validated_data.pop("memberSessions")
-        team = Team.objects.create(**validated_data)
+        team = Team.objects.create(
+            **validated_data, leader=self.context["request"].user
+        )
         memberSessions = []
 
         for memberSession_data in memberSessions_data:
-            members_data = memberSession_data.pop("members")
+            members_data = memberSession_data.get("members", [])
             session = Session.objects.get(name=memberSession_data["session"]["name"])
             requiredMemberCount = memberSession_data["requiredMemberCount"]
             memberSession = MemberSession.objects.create(

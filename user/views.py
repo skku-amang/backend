@@ -38,6 +38,8 @@ class UserRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 
 
 class RegisterAPIView(APIView):
+    permission_classes = []
+
     def post(self, request):
         serializer = CustomUserSerializer(data=request.data)
         if not serializer.is_valid():
