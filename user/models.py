@@ -27,10 +27,10 @@ class Department(models.Model):
 
 
 class PositionChoices(Enum):
-    PRESIDENT = "회장"
-    VICE_PRESIDENT = "부회장"
-    GENERAL_AFFAIRS = "총무"
-    MEMBER = "일반"
+    회장 = "회장"
+    부회장 = "부회장"
+    총무 = "총무"
+    일반 = "일반"
 
     @classmethod
     def choices(cls):
@@ -75,9 +75,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = []
 
     name = models.CharField(max_length=20)
-    nickname = models.CharField(blank=True, max_length=20)
+    nickname = models.CharField(max_length=20, unique=True)
     bio = models.TextField(blank=True)
-    profileImage = models.ImageField(blank=True)
+    image = models.ImageField(blank=True)
     generation = models.ForeignKey(
         "core.Generation", null=True, on_delete=models.PROTECT
     )
@@ -85,7 +85,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     position = models.CharField(
         max_length=30,
         choices=PositionChoices.choices(),
-        default=PositionChoices.MEMBER,
+        default=PositionChoices.일반,
     )
     department = models.ForeignKey(Department, null=True, on_delete=models.PROTECT)
     createdDatetime = models.DateTimeField(auto_now_add=True)

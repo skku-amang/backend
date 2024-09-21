@@ -48,12 +48,12 @@ class Migration(migrations.Migration):
                     "position",
                     models.CharField(
                         choices=[
-                            ("PRESIDENT", "회장"),
-                            ("VICE_PRESIDENT", "부회장"),
-                            ("GENERAL_AFFAIRS", "총무"),
-                            ("MEMBER", "일반"),
+                            ("회장", "회장"),
+                            ("부회장", "부회장"),
+                            ("총무", "총무"),
+                            ("일반", "일반"),
                         ],
-                        default=user.models.PositionChoices["MEMBER"],
+                        default=user.models.PositionChoices["일반"],
                         max_length=30,
                     ),
                 ),

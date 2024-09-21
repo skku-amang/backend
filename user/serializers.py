@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .models import CustomUser, PositionChoices
 from django.contrib.auth.hashers import make_password
 
@@ -42,3 +43,20 @@ class CustomUserSerializer(serializers.ModelSerializer):
             instance.department.name if instance.department else None
         )
         return representation
+
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        token["name"] = user.name
+        token["nickname"] = user.nickname
+        token["image"] = user.image.url if user.image else None  # 이미지 URL 반환
+        token["email"] = user.email
+        token["position"] = user.position
+        return token
+
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        user_data = CustomUserSerializer(self.user).data
+        return data | user_data
