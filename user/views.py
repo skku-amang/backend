@@ -9,8 +9,8 @@ from rest_framework_simplejwt.serializers import (
 )
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
-    TokenRefreshView,
 )
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework import status
 from rest_framework.response import Response
 from user.models import CustomUser
@@ -21,10 +21,20 @@ class UserListCreateAPIView(ListCreateAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
 
+    def get_permissions(self):
+        if self.request.method == "POST":
+            return [IsAdminUser()]
+        return [IsAuthenticated()]
+
 
 class UserRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
+
+    def get_permissions(self):
+        if self.request.method == "GET":
+            return []
+        return [IsAdminUser()]
 
 
 class RegisterAPIView(APIView):

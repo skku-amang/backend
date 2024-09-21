@@ -4,6 +4,7 @@ from rest_framework.generics import (
     GenericAPIView,
 )
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework import status
 
 from core.models.session import Session
@@ -18,10 +19,20 @@ class TeamListCreateAPIView(ListCreateAPIView):
     serializer_class = TeamSerializer
     filterset_class = TeamFilter
 
+    def get_permissions(self):
+        if self.request.method == "POST":
+            return [IsAdminUser()]
+        return []
+
 
 class TeamRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Team.objects.all()
     serializer_class = TeamSerializer
+
+    def get_permissions(self):
+        if self.request.method == "GET":
+            return [IsAuthenticated()]
+        return [IsAdminUser()]
 
 
 class TeamApplyAPIView(GenericAPIView):
