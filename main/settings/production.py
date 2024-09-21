@@ -12,7 +12,6 @@ API_KEY = os.environ.get("DJANGO_API_KEY")
 INSTALLED_APPS = base.INSTALLED_APPS + [
     "storages",
     "corsheaders",
-    "rest_framework_api_key",
 ]
 AUTH_USER_MODEL = base.AUTH_USER_MODEL
 MIDDLEWARE = base.MIDDLEWARE
@@ -54,7 +53,6 @@ USE_TZ = base.USE_TZ
 STORAGES = {
     "default": {
         "BACKEND": "storages.backends.s3.S3Storage",
-        "OPTIONS": {},
     },
     "staticfiles": {
         "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
