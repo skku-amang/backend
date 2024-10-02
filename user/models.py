@@ -61,6 +61,9 @@ class UserManager(BaseUserManager):
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
+    BLANK_USER_ID = 0
+    BLANK_USER_EMAIL = "blank@blank.blank"
+
     objects = UserManager()
 
     email = models.EmailField(

@@ -3,7 +3,7 @@ from django.db import models
 
 class Performance(models.Model):
     name = models.CharField(max_length=255)
-    description = models.TextField()
+    description = models.TextField(blank=True, null=True)
     representativeImage = models.ImageField(upload_to="performance/", null=True)
     location = models.CharField(max_length=255, blank=True, null=True)
     startDatetime = models.DateTimeField(blank=True, null=True)
