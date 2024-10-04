@@ -2,7 +2,8 @@ from django.db import models
 
 
 class Generation(models.Model):
-    order = models.IntegerField()
+    # 99.5기까지 허용
+    order = models.DecimalField(max_digits=3, decimal_places=1, unique=True)
     leader = models.ForeignKey(
         "user.CustomUser",
         null=True,
