@@ -1,20 +1,27 @@
 from rest_framework import serializers
 
 from core.models.session import Session
-from core.models.team import MemberSession
-from user.serializers import CustomUserSerializer
+from core.models.team import MemberSession, MemberSessionMembership
 from ..models import Team, Performance
+
+
+class MemberSessionMemberShipSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MemberSessionMembership
+        fields = "__all__"
 
 
 class MemberSessionSerializer(serializers.ModelSerializer):
     session = serializers.CharField(source="session.name")
-    members = CustomUserSerializer(many=True, read_only=True)
-    membersId = serializers.PrimaryKeyRelatedField(
-        many=True,
-        queryset=CustomUserSerializer.Meta.model.objects.all(),
+    members = MemberSessionMemberShipSerializer(many=True, read_only=True)
+    membersId = serializers.ListField(
+        child=serializers.PrimaryKeyRelatedField(
+            queryset=MemberSessionMembership.objects.all(), allow_null=True
+        ),
         write_only=True,
         source="members",
-        required=True,
+        required=False,
+        allow_empty=True,
     )
 
     class Meta:
@@ -45,13 +52,23 @@ class TeamSerializer(serializers.ModelSerializer):
             members_data = memberSession_data.get("members", [])
             session = Session.objects.get(name=memberSession_data["session"]["name"])
             memberSession = MemberSession.objects.create(team=team, session=session)
-            memberSession.members.set(members_data)
+
+            memberSessionMembership = []
+            index = 0
+            for member_data in members_data:
+                ms, created = MemberSessionMembership.objects.get_or_create(
+                    memberSession=memberSession, member=member_data, index=index
+                )
+                memberSessionMembership.append(ms)
+                index += 1
+            memberSession.members.set(memberSessionMembership)
             memberSession.save()
             memberSessions.append(memberSession)
 
         team.memberSessions.set(memberSessions)
         return team
 
+    # not implemented
     def update(self, instance, validated_data):
         # Update or create memberSessions
         memberSessions_data = validated_data.pop("memberSessions")
