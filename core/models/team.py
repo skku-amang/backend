@@ -40,7 +40,6 @@ class MemberSessionMembership(models.Model):
     # 따라서 이러한 중복을 허용하기 위해 이 모델을 따로 정의합니다.
     # 중복을 허용하는 이유는 공백 유저가 여러번 등록되는 경우가 있기 때문입니다.
     # 다만, 로컬(SQLite)에서는 deferrable unique constraints가 적용되지 않기에 중복이 불가능합니다.
-    asdf = models.AutoField(primary_key=True)
     member_session = models.ForeignKey(MemberSession, on_delete=models.CASCADE)
     custom_user = models.ForeignKey("user.CustomUser", on_delete=models.CASCADE)
 
