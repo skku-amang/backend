@@ -14,12 +14,12 @@ class MemberSessionSerializer(serializers.ModelSerializer):
         queryset=CustomUserSerializer.Meta.model.objects.all(),
         write_only=True,
         source="members",
-        required=False,
+        required=True,
     )
 
     class Meta:
         model = MemberSession
-        fields = ("id", "session", "members", "membersId", "requiredMemberCount")
+        fields = ("id", "session", "members", "membersId")
         ref_name = "TeamMemberSession"
 
 
@@ -44,10 +44,7 @@ class TeamSerializer(serializers.ModelSerializer):
         for memberSession_data in memberSessions_data:
             members_data = memberSession_data.get("members", [])
             session = Session.objects.get(name=memberSession_data["session"]["name"])
-            requiredMemberCount = memberSession_data["requiredMemberCount"]
-            memberSession = MemberSession.objects.create(
-                team=team, session=session, requiredMemberCount=requiredMemberCount
-            )
+            memberSession = MemberSession.objects.create(team=team, session=session)
             memberSession.members.set(members_data)
             memberSession.save()
             memberSessions.append(memberSession)

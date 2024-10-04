@@ -11,6 +11,7 @@ from core.models.session import Session
 from core.models.team import Team
 from core.serializers.team import TeamSerializer
 from core.views.filters import TeamFilter
+from user.models import CustomUser
 
 
 class TeamListCreateAPIView(ListCreateAPIView):
@@ -40,7 +41,6 @@ class TeamApplyAPIView(GenericAPIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, **kwargs):
-        print(request.user)
         team = self.get_object()
         session = Session.objects.get(name=request.data.get("session"))
         ms = team.memberSessions.get(session=session)
@@ -54,27 +54,26 @@ class TeamApplyAPIView(GenericAPIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
         ms.members.set(newMembers)
-        ms.save()
 
         serializer = self.serializer_class(team)
         return Response(serializer.data)
 
     def delete(self, request, **kwargs):
-        print(request.user)
         team = self.get_object()
         session = Session.objects.get(name=request.data.get("session"))
         ms = team.memberSessions.get(session=session)
         oldMemberList = ms.members.all()
         newMembers = list(oldMemberList)
-        if request.user in oldMemberList:
-            newMembers.remove(request.user)
+        if request.user in newMembers:  # 신청한 유저가 해당 세션에 등록되어 있다면
+            newMembers[newMembers.index(request.user)] = CustomUser.objects.get(
+                id=CustomUser.BLANK_USER_ID
+            )
         else:
             return Response(
                 {"detail": "세션에 등록되지 않은 유저입니다."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
         ms.members.set(newMembers)
-        ms.save()
 
         serializer = self.serializer_class(team)
         return Response(serializer.data)
