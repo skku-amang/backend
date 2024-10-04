@@ -25,9 +25,7 @@ class Command(BaseCommand):
                     self.style.WARNING(f"Blank User with email {email} already exists.")
                 )
         except Exception as e:
-            self.style.ERROR(
-                f"Error while creating blank user with {User.BLANK_USER_EMAIL}"
-            )
+            self.style.ERROR(f"Error while creating blank")
             raise e
 
     @classmethod
