@@ -3,6 +3,7 @@ import os
 from pathlib import Path
 
 
+API_KEYS = ["5d315042-fc95-4c00-b86b-f22250fb2ce6"]
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 SECRET_KEY = "django-insecure-^n^@+$ntm)wr@qc&vf1djtwuv54))+cvmdd7se$spd_#pd%7*2"
 
@@ -31,7 +32,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "core.middleware.BlockIPMiddleware",
+    "core.middleware.APIKeyMiddleware",
 ]
 ROOT_URLCONF = "main.urls"
 TEMPLATES = [

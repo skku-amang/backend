@@ -1,5 +1,6 @@
 from django.http import HttpResponseForbidden
 from django.core.cache import cache
+from django.conf import settings
 
 
 class BlockIPMiddleware:
@@ -20,3 +21,18 @@ class BlockIPMiddleware:
                 cache.set(ip, True, timeout=36000)  # 10시간 동안 차단
 
         return response
+
+
+class APIKeyMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        api_key = request.headers.get("X-API-KEY")
+
+        # API 키 확인
+        if api_key not in settings.API_KEYS:
+            return HttpResponseForbidden("Invalid API Key")
+
+        # API 키가 유효한 경우 요청 처리
+        return self.get_response(request)
