@@ -2,13 +2,15 @@ from rest_framework import serializers
 
 from core.models.session import Session
 from core.models.team import MemberSession, MemberSessionMembership
+from user.models import CustomUser
+from user.serializers import CustomUserSerializer
 from ..models import Team, Performance
 
 
 class MemberSessionMemberShipSerializer(serializers.ModelSerializer):
     class Meta:
         model = MemberSessionMembership
-        fields = "__all__"
+        fields = ("index", "member")
 
 
 class MemberSessionSerializer(serializers.ModelSerializer):
@@ -16,7 +18,7 @@ class MemberSessionSerializer(serializers.ModelSerializer):
     members = MemberSessionMemberShipSerializer(many=True, read_only=True)
     membersId = serializers.ListField(
         child=serializers.PrimaryKeyRelatedField(
-            queryset=MemberSessionMembership.objects.all(), allow_null=True
+            queryset=CustomUser.objects.all(), allow_null=True
         ),
         write_only=True,
         source="members",
@@ -26,8 +28,33 @@ class MemberSessionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MemberSession
-        fields = ("id", "session", "members", "membersId")
+        fields = ("session", "members", "membersId")
         ref_name = "TeamMemberSession"
+
+
+class MemberSessionSerializer(serializers.ModelSerializer):
+    session = serializers.CharField(source="session.name")
+    members = serializers.SerializerMethodField()
+    membersId = serializers.ListField(
+        child=serializers.PrimaryKeyRelatedField(
+            queryset=CustomUser.objects.all(), allow_null=True
+        ),
+        write_only=True,
+        source="members",
+        required=False,
+        allow_empty=True,
+    )
+
+    def get_members(self, obj):
+        memberships = MemberSessionMembership.objects.filter(memberSession=obj)
+        return [
+            CustomUserSerializer(membership.member).data if membership.member else None
+            for membership in memberships
+        ]
+
+    class Meta:
+        model = MemberSession
+        fields = ("session", "members", "membersId")
 
 
 class TeamSerializer(serializers.ModelSerializer):
@@ -56,10 +83,11 @@ class TeamSerializer(serializers.ModelSerializer):
             memberSessionMembership = []
             index = 0
             for member_data in members_data:
-                ms, created = MemberSessionMembership.objects.get_or_create(
-                    memberSession=memberSession, member=member_data, index=index
+                memberSessionMembership.append(
+                    MemberSessionMembership.objects.create(
+                        memberSession=memberSession, member=member_data, index=index
+                    )
                 )
-                memberSessionMembership.append(ms)
                 index += 1
             memberSession.members.set(memberSessionMembership)
             memberSession.save()
