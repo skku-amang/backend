@@ -70,6 +70,14 @@ REST_FRAMEWORK = {
 DATABASES = None
 
 
+# Cache
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+    }
+}
+
+
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {
