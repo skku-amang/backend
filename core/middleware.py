@@ -28,6 +28,10 @@ class APIKeyMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
+        # ELB health check
+        if request.path == "/":
+            return self.get_response(request)
+
         api_key = request.headers.get("X-API-KEY")
 
         # API 키 확인
