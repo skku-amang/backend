@@ -30,6 +30,13 @@ class MemberSession(models.Model):
     def __str__(self) -> str:
         return f"{self.team} - {self.session}"
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["team", "session"], name="unique_team_session"
+            )
+        ]
+
 
 class MemberSessionMembership(models.Model):
     memberSession = models.ForeignKey(

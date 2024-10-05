@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
 from core.models.session import Session
 from core.models.team import MemberSession, MemberSessionMembership
@@ -54,6 +55,13 @@ class TeamSerializer(serializers.ModelSerializer):
         for memberSession_data in memberSessions_data:
             members_data = memberSession_data.get("members", [])
             session = Session.objects.get(name=memberSession_data["session"]["name"])
+
+            if MemberSession.objects.filter(team=team, session=session).exists():
+                raise ValidationError(
+                    f"MemberSession with session '{session.name}' already exists for this team.",
+                    code='duplicate_session'
+                )
+
             memberSession = MemberSession.objects.create(team=team, session=session)
 
             for index, member_data in enumerate(members_data):
@@ -64,25 +72,26 @@ class TeamSerializer(serializers.ModelSerializer):
         return team
 
     def update(self, instance, validated_data):
-        # 기존 memberSessions 삭제
         instance.memberSessions.all().delete()
 
-        # TODO: 모두 삭제하고 다시 만드는 것이 아니라, 수정된 것만 수정하고 추가된 것만 추가하는 방법으로 변경
-
-        # Update or create memberSessions
         memberSessions_data = validated_data.pop("memberSessions")
         for memberSession_data in memberSessions_data:
             members_data = memberSession_data.get("members", [])
             session = Session.objects.get(name=memberSession_data["session"]["name"])
+
+            if MemberSession.objects.filter(team=instance, session=session).exists():
+                raise ValidationError(
+                    f"MemberSession with session '{session.name}' already exists for this team.",
+                    code='duplicate_session'
+                )
+
             memberSession = MemberSession.objects.create(team=instance, session=session)
 
-            # Update or create members
             for index, member_data in enumerate(members_data):
                 MemberSessionMembership.objects.create(
                     memberSession=memberSession, index=index, member=member_data
                 )
 
-        # Update team instance
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
         instance.save()

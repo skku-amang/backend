@@ -31,6 +31,10 @@ DATABASES = {
 }
 
 
+# Cache
+CACHES = base.CACHES
+
+
 # Password validation
 AUTH_PASSWORD_VALIDATORS = base.AUTH_PASSWORD_VALIDATORS
 
