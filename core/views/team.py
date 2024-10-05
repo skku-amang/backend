@@ -36,6 +36,12 @@ class TeamRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
             return [IsAuthenticated()]
         return [IsTeamLeaderOrAdmin()]
 
+    def patch(self, request, *args, **kwargs):
+        return Response(
+            {"detail": "Method 'PATCH' not implemented."},
+            status=status.HTTP_405_METHOD_NOT_ALLOWED,
+        )
+
 
 class TeamApplyAPIView(GenericAPIView):
     queryset = Team.objects.all()

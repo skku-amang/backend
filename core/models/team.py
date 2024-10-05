@@ -27,6 +27,9 @@ class MemberSession(models.Model):
     )
     session = models.ForeignKey("core.Session", on_delete=models.SET_NULL, null=True)
 
+    def __str__(self) -> str:
+        return f"{self.team} - {self.session}"
+
 
 class MemberSessionMembership(models.Model):
     memberSession = models.ForeignKey(
@@ -36,3 +39,6 @@ class MemberSessionMembership(models.Model):
         "user.CustomUser", on_delete=models.CASCADE, null=True, blank=True
     )
     index = models.IntegerField()
+
+    def __str__(self) -> str:
+        return f"{self.memberSession} - {self.member}({self.index})"

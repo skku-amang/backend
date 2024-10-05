@@ -7,31 +7,6 @@ from user.serializers import CustomUserSerializer
 from ..models import Team, Performance
 
 
-class MemberSessionMemberShipSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MemberSessionMembership
-        fields = ("index", "member")
-
-
-class MemberSessionSerializer(serializers.ModelSerializer):
-    session = serializers.CharField(source="session.name")
-    members = MemberSessionMemberShipSerializer(many=True, read_only=True)
-    membersId = serializers.ListField(
-        child=serializers.PrimaryKeyRelatedField(
-            queryset=CustomUser.objects.all(), allow_null=True
-        ),
-        write_only=True,
-        source="members",
-        required=False,
-        allow_empty=True,
-    )
-
-    class Meta:
-        model = MemberSession
-        fields = ("session", "members", "membersId")
-        ref_name = "TeamMemberSession"
-
-
 class MemberSessionSerializer(serializers.ModelSerializer):
     session = serializers.CharField(source="session.name")
     members = serializers.SerializerMethodField()
@@ -46,7 +21,9 @@ class MemberSessionSerializer(serializers.ModelSerializer):
     )
 
     def get_members(self, obj):
-        memberships = MemberSessionMembership.objects.filter(memberSession=obj)
+        memberships = MemberSessionMembership.objects.filter(
+            memberSession=obj
+        ).order_by("index")
         return [
             CustomUserSerializer(membership.member).data if membership.member else None
             for membership in memberships
@@ -73,47 +50,37 @@ class TeamSerializer(serializers.ModelSerializer):
         team = Team.objects.create(
             **validated_data, leader=self.context["request"].user
         )
-        memberSessions = []
 
         for memberSession_data in memberSessions_data:
             members_data = memberSession_data.get("members", [])
             session = Session.objects.get(name=memberSession_data["session"]["name"])
             memberSession = MemberSession.objects.create(team=team, session=session)
 
-            memberSessionMembership = []
-            index = 0
-            for member_data in members_data:
-                memberSessionMembership.append(
-                    MemberSessionMembership.objects.create(
-                        memberSession=memberSession, member=member_data, index=index
-                    )
+            for index, member_data in enumerate(members_data):
+                MemberSessionMembership.objects.create(
+                    memberSession=memberSession, member=member_data, index=index
                 )
-                index += 1
-            memberSession.members.set(memberSessionMembership)
-            memberSession.save()
-            memberSessions.append(memberSession)
 
-        team.memberSessions.set(memberSessions)
         return team
 
-    # not implemented
     def update(self, instance, validated_data):
+        # 기존 memberSessions 삭제
+        instance.memberSessions.all().delete()
+
+        # TODO: 모두 삭제하고 다시 만드는 것이 아니라, 수정된 것만 수정하고 추가된 것만 추가하는 방법으로 변경
+
         # Update or create memberSessions
         memberSessions_data = validated_data.pop("memberSessions")
         for memberSession_data in memberSessions_data:
-            members_data = memberSession_data.pop("members")
-            if memberSession_data["id"]:
-                memberSession = MemberSession.objects.get(id=memberSession_data["id"])
-                for attr, value in memberSession_data.items():
-                    setattr(memberSession, attr, value)
-                memberSession.members.set(members_data)
-                memberSession.save()
-            else:
-                memberSession = MemberSession.objects.create(
-                    team=instance, session=memberSession_data["session"]
+            members_data = memberSession_data.get("members", [])
+            session = Session.objects.get(name=memberSession_data["session"]["name"])
+            memberSession = MemberSession.objects.create(team=instance, session=session)
+
+            # Update or create members
+            for index, member_data in enumerate(members_data):
+                MemberSessionMembership.objects.create(
+                    memberSession=memberSession, index=index, member=member_data
                 )
-                memberSession.members.set(members_data)
-                memberSession.save()
 
         # Update team instance
         for attr, value in validated_data.items():
