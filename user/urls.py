@@ -13,7 +13,7 @@ urlpatterns = [
         "users/<int:pk>/",
         views.UserRetrieveUpdateDestroyAPIView.as_view(),
     ),
-    path("auth/login/", views.CustomTokenObtainPairView.as_view()),
-    path("auth/register/", views.RegisterAPIView.as_view()),
-    path("auth/refresh/", TokenRefreshView.as_view()),
+    path("backend/auth/login/", views.CustomTokenObtainPairView.as_view()),
+    path("backend/auth/register/", views.RegisterAPIView.as_view()),
+    path("backend/auth/refresh/", TokenRefreshView.as_view()),
 ]

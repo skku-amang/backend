@@ -8,15 +8,13 @@ class Command(BaseCommand):
     help = "Create a superuser if none exists"
 
     def handle(self, *args, **kwargs):
-        load_dotenv("/opt/elasticbeanstalk/deployment/env")
-
         User = get_user_model()
         email = os.getenv("DJANGO_SUPERUSER_EMAIL")
         password = os.getenv("DJANGO_SUPERUSER_PASSWORD")
 
         if not email or not password:
             self.stdout.write(
-                self.style.ERROR("Superuser environment variables are not set.")
+                self.style.ERROR("Superuser environment variables are not set. Skipping.")
             )
             return
 
@@ -27,5 +25,5 @@ class Command(BaseCommand):
             )
         else:
             self.stdout.write(
-                self.style.WARNING(f"Superuser with email {email} already exists.")
+                self.style.WARNING(f"Superuser with email {email} already exists. Skipping.")
             )
