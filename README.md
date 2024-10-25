@@ -37,7 +37,7 @@ backend/
 ├── manage.py              # Django CLI
 ├── README.md              # 레포지토리 소개
 └── requirements.txt       # 필요한 라이브러리 목록
-
+```
 
 # 레포지토리 세팅
 ## 준비물
