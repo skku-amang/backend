@@ -1,12 +1,13 @@
-# What is this repo about?
+# 레포지토리 소개
 아망 홈페이지 프로젝트를 위한 백엔드 서버입니다.
 
 
 # 준비물
 - git: https://git-scm.com/downloads
-- python >= 3.10
+- python >= 3.10: https://www.python.org/downloads/
 - virtualenv: https://pypi.org/project/virtualenv/
 - postgresql: https://www.postgresql.org/download/
+
 
 # 사용법
 ## 1. 이 레포지토리를 클론합니다.
@@ -41,12 +42,15 @@ ALTER USER postgres PASSWORD <새 비밀번호>;  # postgres 사용자 비밀번
 sudo service postgresql restart             # postgresql 서비스 재시작
 \q                                          # psql 종료
 ```
-위에서 설정한 <새 비밀번호>를 `.env.local` 파일에 `DATABASE_PASSWORD`로 설정합니다.
+위에서 설정한 `<새 비밀번호>`를 `.env.local` 파일에 `DATABASE_PASSWORD`로 설정합니다.
+데이터베이스 유저와 데이터베이스 이름은 기본 값인 `postgres`를 사용합니다.
 
 
-## 5. DB 초기화
+## 5. DB 마이그레이션 및 시드 데이터 추가
 ```bash
 python manage.py migrate
+python manage.py seed_core
+python manage.py create_superuser
 ```
 
 
@@ -54,4 +58,4 @@ python manage.py migrate
 ```bash
 python manage.py runserver
 ```
-또는 `F5`를 눌러 vscode 세팅을 이용하여 디버그 서버를 실행할 수 있습니다.
+또는 `F5`~~딸깍~~를 눌러 vscode 세팅을 이용하여 디버그 서버를 실행할 수 있습니다.

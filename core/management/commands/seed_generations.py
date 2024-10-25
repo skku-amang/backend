@@ -10,11 +10,17 @@ class Command(BaseCommand):
         self.stdout.write("Creating default generations...")
 
         # 25기부터 37기까지 생성
-        generations = [x/2 for x in range(50, 76)]
+        generations = [x / 2 for x in range(50, 76)]
 
         for order in generations:
             generation, created = Generation.objects.get_or_create(order=order)
             if created:
-                self.stdout.write(self.style.SUCCESS(f"Generation {order} created successfully."))
+                self.stdout.write(
+                    self.style.SUCCESS(f"Generation {generation.order} created successfully.")
+                )
             else:
-                self.stdout.write(f"Generation {order} skipped as it is already exists.")
+                self.stdout.write(
+                    self.style.WARNING(
+                        f"Generation {generation.order} skipped as it is already exists."
+                    )
+                )

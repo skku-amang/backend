@@ -15,4 +15,8 @@ class Command(BaseCommand):
                     self.style.SUCCESS(f"Session {name} created successfully.")
                 )
             else:
-                self.stdout.write(f"Session {name} skipped as it is already exists.")
+                self.stdout.write(
+                    self.style.WARNING(
+                        f"Session {name} skipped as it is already exists."
+                    )
+                )
