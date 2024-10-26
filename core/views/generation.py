@@ -1,3 +1,5 @@
+from decimal import Decimal
+from django.http import Http404
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAdminUser
 
@@ -25,3 +27,19 @@ class GenerationRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
         if self.request.method == "GET":
             return []
         return [IsAdminUser()]
+
+    def get_object(self):
+        pk = self.kwargs.get('pk')
+        try:
+            # pk 값을 Decimal로 변환하여 조회
+            decimal_pk = Decimal(pk)
+        except Exception:
+            # Decimal 변환에 실패하면 404 오류 반환
+            raise Http404("Invalid Generation ID")
+
+        # Decimal 값으로 Generation을 조회
+        try:
+            return Generation.objects.get(order=decimal_pk)
+        except Generation.DoesNotExist:
+            # 객체를 찾지 못하면 404 오류 반환
+            raise Http404("Generation not found")
