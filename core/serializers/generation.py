@@ -1,9 +1,10 @@
 from decimal import Decimal
 from rest_framework import serializers
 from ..models.generation import Generation
-
+from user.models import CustomUser
 
 class GenerationSerializer(serializers.ModelSerializer):
+    leader = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all(), required=False)
     class Meta:
         model = Generation
         fields = "__all__"
