@@ -8,7 +8,7 @@ urlpatterns = [
         name="generation-list_create",
     ),
     path(
-        "generations/<int:pk>/",
+        "generations/<str:pk>/",
         generation.GenerationRetrieveUpdateDestroyAPIView.as_view(),
         name="generation-retrieve_update_destroy",
     ),

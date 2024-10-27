@@ -1,5 +1,7 @@
+from decimal import Decimal, InvalidOperation
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAdminUser
+from rest_framework.exceptions import ValidationError, NotFound
 
 from core.models.generation import Generation
 from core.serializers.generation import GenerationSerializer
@@ -25,3 +27,15 @@ class GenerationRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
         if self.request.method == "GET":
             return []
         return [IsAdminUser()]
+
+    def get_object(self):
+        pk = self.kwargs.get('pk')
+        try:
+            decimal_pk = Decimal(pk)
+        except InvalidOperation:
+            raise ValidationError("Invalid Generation ID")
+
+        try:
+            return Generation.objects.get(order=decimal_pk)
+        except Generation.DoesNotExist:
+            raise NotFound("Generation does not exist")
