@@ -56,8 +56,9 @@ git clone https://github.com/skku-amang/backend
 ### 2. 가상환경을 설정합니다.
 ```bash
 cd backend
-virtualenv env
-source env/bin/activate
+sudo apt install python3-virtualenv
+virtualenv .env
+source .env/bin/activate
 ```
 
 ### 3. 필요한 라이브러리를 설치합니다.
@@ -74,14 +75,14 @@ sudo service postgresql start               # postgresql 서비스 시작
 ```
 
 #### 4-2. PostgreSQL 초기화
+아래에서 설정할 `<새 비밀번호>`를 `.env.local` 파일에 `DATABASE_PASSWORD`로 설정합니다.
+데이터베이스 유저와 데이터베이스 이름은 기본 값인 `postgres`를 사용합니다.
 ```bash
 sudo -u postgres psql                       # 기본 사용자(postgres)로 psql 실행
 ALTER USER postgres PASSWORD <새 비밀번호>;  # postgres 사용자 비밀번호 변경
 sudo service postgresql restart             # postgresql 서비스 재시작
 \q                                          # psql 종료
 ```
-위에서 설정한 `<새 비밀번호>`를 `.env.local` 파일에 `DATABASE_PASSWORD`로 설정합니다.
-데이터베이스 유저와 데이터베이스 이름은 기본 값인 `postgres`를 사용합니다.
 
 
 ### 5. DB 마이그레이션 및 시드 데이터 추가
