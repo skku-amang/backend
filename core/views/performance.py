@@ -1,6 +1,8 @@
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
+from core.models.team import Team
+from core.serializers.team import TeamSerializer
 from core.models.performance import Performance
 from core.serializers.performance import PerformanceSerializer
 from core.views.filters import PerformanceFilter
@@ -25,3 +27,13 @@ class PerformanceRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
         if self.request.method == "GET":
             return [IsAuthenticated()]
         return [IsAdminUser()]
+
+
+class PerformanceTeamListAPIView(ListAPIView):
+    serializer_class = TeamSerializer
+
+    def get_queryset(self):
+        return Team.objects.filter(performance__id=self.kwargs["pk"])
+
+    def get_permissions(self):
+        return [IsAuthenticated()]
