@@ -84,7 +84,8 @@ MEDIA_ROOT = base.MEDIA_ROOT
 
 
 # CORS
-CORS_ALLOWED_ORIGINS = os.environ.get("DJANGO_CORS_ALLOWED_ORIGINS").split(",")
+# CORS_ALLOWED_ORIGINS = os.environ.get("DJANGO_CORS_ALLOWED_ORIGINS").split(",")
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_HEADERS = [
     "accept",
     "accept-encoding",

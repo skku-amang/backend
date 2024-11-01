@@ -41,7 +41,7 @@ def load_environment_variables():
 
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "main.settings.development")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "main.settings.development")    # TODO: 환경변수에 따라 설정 변경
     load_environment_variables()
     try:
         from django.core.management import execute_from_command_line
