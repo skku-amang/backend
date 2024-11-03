@@ -83,7 +83,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     bio = models.TextField(blank=True)
     image = models.ImageField(blank=True)
     generation = models.ForeignKey(
-        "core.Generation", null=True, on_delete=models.PROTECT
+        "core.Generation", null=False, on_delete=models.PROTECT
     )
     sessions = models.ManyToManyField("core.Session", related_name="users")
     position = models.CharField(
