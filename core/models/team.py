@@ -7,6 +7,7 @@ class Team(models.Model):
     leader = models.ForeignKey("user.CustomUser", null=True, on_delete=models.SET_NULL)
     performance = models.ForeignKey("Performance", on_delete=models.PROTECT)
     isFreshmenFixed = models.BooleanField(default=False)
+    isSelfMade = models.BooleanField(default=False)
     posterImage = models.ImageField(upload_to="team_poster/", blank=True)
 
     # Song
