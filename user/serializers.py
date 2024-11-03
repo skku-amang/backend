@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+from core.serializers.generation import GenerationSerializer
 from .models import CustomUser, PositionChoices
 from django.contrib.auth.hashers import make_password
 
@@ -7,6 +9,10 @@ from django.contrib.auth.hashers import make_password
 class CustomUserSerializer(serializers.ModelSerializer):
     position = serializers.ChoiceField(
         required=False, choices=PositionChoices.choices()
+    )
+    generation = GenerationSerializer(required=False, read_only=True)
+    generationId = serializers.PrimaryKeyRelatedField(
+        queryset=GenerationSerializer.Meta.model.objects.all(), source="generation", write_only=True
     )
 
     class Meta:
