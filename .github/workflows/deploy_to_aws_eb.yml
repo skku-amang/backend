@@ -45,5 +45,5 @@ jobs:
           eb init -p docker Amang-Homepage --region ${{ secrets.AWS_REGION }}
           eb use production
           echo "version: 1" > Dockerrun.aws.json
-          echo "image: ghcr.io/${{ github.repository_owner }}/amang-backend:latest" >> Dockerrun.aws.json
+          echo "image: ghcr.io/${{ github.repository_owner }}/amang-homepage-backend:latest" >> Dockerrun.aws.json
           eb deploy
