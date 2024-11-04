@@ -39,14 +39,6 @@ jobs:
         run: |
           eb init -p python-${{ matrix.python-version }} Amang --region $AWS_REGION
           eb use production
-
-      - name: Wait for Elastic Beanstalk to be ready
-        run: |
-          while ! eb status | grep -q "Ready"; do
-            echo ! eb status | grep -q "Ready"
-            echo "Waiting for Elastic Beanstalk to be ready..."
-            sleep 10
-          done
       
       - name: Deploy to Elastic Beanstalk
         run: |
