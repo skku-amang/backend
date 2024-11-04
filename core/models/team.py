@@ -5,7 +5,7 @@ class Team(models.Model):
     name = models.CharField(max_length=50, blank=True, null=True)
     description = models.TextField(blank=True)
     leader = models.ForeignKey("user.CustomUser", null=True, on_delete=models.SET_NULL)
-    performance = models.ForeignKey("Performance", on_delete=models.PROTECT)
+    performance = models.ForeignKey("Performance", on_delete=models.CASCADE)
     isFreshmenFixed = models.BooleanField(default=False)
     isSelfMade = models.BooleanField(default=False)
     posterImage = models.ImageField(upload_to="team_poster/", blank=True)
