@@ -1,9 +1,10 @@
-name: Deploy to Elastic Beanstalk
+name: Deploy to AWS Elastic Beanstalk
 
 on:
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows: ["build-image"]
+    types:
+      - completed
 
 jobs:
   deploy:
@@ -32,9 +33,8 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y awscli
 
-      - name: Install AWS Elastic Beanstalk CLI
-        run: |
-          pip install awsebcli
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
 
       - name: Deploy to Elastic Beanstalk
         env:
@@ -42,5 +42,8 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
         run: |
-          eb init -p python-${{ matrix.python-version }} Amang-Homepage --region $AWS_REGION
-          eb deploy $ENVIRONMENT
+          eb init -p docker Amang-Homepage --region ${{ secrets.AWS_REGION }}
+          eb use production
+          echo "version: 1" > Dockerrun.aws.json
+          echo "image: ghcr.io/${{ github.repository_owner }}/amang-backend:latest" >> Dockerrun.aws.json
+          eb deploy
