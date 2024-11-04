@@ -7,7 +7,6 @@ BASE_DIR = base.BASE_DIR
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 DEBUG = os.environ.get("DJANGO_DEBUG", False)
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(",")
-API_KEY = os.environ.get("DJANGO_API_KEY")
 
 # Application definition
 INSTALLED_APPS = base.INSTALLED_APPS + [
