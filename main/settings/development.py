@@ -2,7 +2,6 @@ import os
 from . import base
 
 
-API_KEYS = base.API_KEYS
 BASE_DIR = base.BASE_DIR
 SECRET_KEY = base.SECRET_KEY
 DEBUG = True
