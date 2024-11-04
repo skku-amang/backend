@@ -44,7 +44,7 @@ class TeamSerializer(serializers.ModelSerializer):
     class Meta:
         model = Team
         fields = "__all__"
-        depth = 1
+        depth = 2
 
     def create(self, validated_data):
         memberSessions_data = validated_data.pop("memberSessions")
