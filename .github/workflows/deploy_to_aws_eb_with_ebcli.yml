@@ -38,6 +38,7 @@ jobs:
           AWS_REGION: ${{ secrets.AWS_REGION }}
         run: |
           eb init -p python-${{ matrix.python-version }} Amang --region $AWS_REGION
+          eb use $ENVIRONMENT
 
       - name: Wait for Elastic Beanstalk to be ready
         run: |
@@ -48,4 +49,4 @@ jobs:
       
       - name: Deploy to Elastic Beanstalk
         run: |
-          eb deploy $ENVIRONMENT
+          eb deploy
