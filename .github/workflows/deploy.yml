@@ -43,4 +43,4 @@ jobs:
           AWS_REGION: ${{ secrets.AWS_REGION }}
         run: |
           eb init -p python-${{ matrix.python-version }} Amang-Homepage --region $AWS_REGION
-          eb deploy
+          eb deploy $ENVIRONMENT
