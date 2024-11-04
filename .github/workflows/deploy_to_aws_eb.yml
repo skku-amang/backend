@@ -31,44 +31,14 @@ jobs:
       - name: Log in to GitHub Container Registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
 
-      - name: Wait for environment to be ready
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-        run: |
-          while true; do
-            STATUS=$(aws elasticbeanstalk describe-environments --environment-names production --query "Environments[0].Status" --output text)
-            if [ "$STATUS" == "Ready" ]; then
-              break
-            fi
-            echo "Waiting for environment to be ready..."
-            sleep 30
-          done
-
       - name: Initialize Elastic Beanstalk
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
         run: |
-          eb init -p docker Amang-Homepage --region ${{ secrets.AWS_REGION }}
+          eb init -p docker Amang --region ${{ secrets.AWS_REGION }}
           eb use production
-
-      - name: Wait for environment to be ready after init
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-        run: |
-          while true; do
-            STATUS=$(aws elasticbeanstalk describe-environments --environment-names production --query "Environments[0].Status" --output text)
-            if [ "$STATUS" == "Ready" ]; then
-              break
-            fi
-            echo "Waiting for environment to be ready after init..."
-            sleep 10
-          done
 
       - name: Deploy to Elastic Beanstalk
         env:
