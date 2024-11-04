@@ -46,7 +46,7 @@ jobs:
             sleep 30
           done
 
-      - name: Deploy to Elastic Beanstalk
+      - name: Initialize Elastic Beanstalk
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -54,6 +54,28 @@ jobs:
         run: |
           eb init -p docker Amang-Homepage --region ${{ secrets.AWS_REGION }}
           eb use production
+
+      - name: Wait for environment to be ready after init
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+        run: |
+          while true; do
+            STATUS=$(aws elasticbeanstalk describe-environments --environment-names production --query "Environments[0].Status" --output text)
+            if [ "$STATUS" == "Ready" ]; then
+              break
+            fi
+            echo "Waiting for environment to be ready after init..."
+            sleep 10
+          done
+
+      - name: Deploy to Elastic Beanstalk
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+        run: |
           echo "version: 1" > Dockerrun.aws.json
           echo "image: ghcr.io/${{ github.repository_owner }}/amang-homepage-backend:latest" >> Dockerrun.aws.json
           eb deploy
