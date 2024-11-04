@@ -1,10 +1,9 @@
 name: Deploy to AWS Elastic Beanstalk with EB CLI
 
 on:
-  workflow_run:
-    workflows: ["Build Image"]
-    types:
-      - completed
+  push:
+    branches:
+      - main
 
 jobs:
   deploy:
