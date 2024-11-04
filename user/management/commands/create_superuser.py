@@ -16,13 +16,17 @@ class Command(BaseCommand):
                 self.style.ERROR("Superuser environment variables are not set. Skipping.")
             )
             return
-
-        if not User.objects.filter(email=email).exists():
-            User.objects.create_superuser(email=email, password=password)
-            self.stdout.write(
-                self.style.SUCCESS(f"Superuser {email} created successfully.")
-            )
-        else:
-            self.stdout.write(
-                self.style.WARNING(f"Superuser with email {email} already exists. Skipping.")
-            )
+        
+        try:
+            if not User.objects.filter(email=email).exists():
+                User.objects.create_superuser(email=email, password=password)
+                self.stdout.write(
+                    self.style.SUCCESS(f"Superuser {email} created successfully.")
+                )
+            else:
+                self.stdout.write(
+                    self.style.WARNING(f"Superuser with email {email} already exists. Skipping.")
+                )
+        except Exception as e:
+            self.stdout.write(self.style.ERROR(f"Error creating superuser: {e}"))
+            return
