@@ -43,6 +43,7 @@ jobs:
       - name: Wait for Elastic Beanstalk to be ready
         run: |
           while ! eb status | grep -q "Ready"; do
+            echo ! eb status | grep -q "Ready"
             echo "Waiting for Elastic Beanstalk to be ready..."
             sleep 10
           done
