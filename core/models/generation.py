@@ -13,3 +13,8 @@ class Generation(models.Model):
 
     def __str__(self) -> str:
         return f"{self.order}기"
+    
+    class Meta:
+        ordering = ["order"]
+        verbose_name = "기수"
+        verbose_name_plural = "기수"

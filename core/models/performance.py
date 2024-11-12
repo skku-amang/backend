@@ -14,3 +14,8 @@ class Performance(models.Model):
 
     def __str__(self) -> str:
         return self.name
+    
+    class Meta:
+        ordering = ["-createdDatetime"]
+        verbose_name = "공연"
+        verbose_name_plural = "공연"

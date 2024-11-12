@@ -2,8 +2,8 @@ from django.db import models
 
 
 class Feedback(models.Model):
-    performance = models.ForeignKey(
-        "core.Performance", on_delete=models.CASCADE, related_name="feedbacks"
+    performance = models.OneToOneField(
+        "core.Performance", on_delete=models.CASCADE, related_name="feedback"
     )
     createdDatetime = models.DateTimeField(auto_now_add=True)
     updatedDatetime = models.DateTimeField(auto_now=True)

@@ -20,6 +20,11 @@ class Team(models.Model):
 
     def __str__(self) -> str:
         return f"{self.name}({self.leader})"
+    
+    class Meta:
+        ordering = ["-createdDatetime"]
+        verbose_name = "팀"
+        verbose_name_plural = "팀"
 
 
 class MemberSession(models.Model):
@@ -37,6 +42,9 @@ class MemberSession(models.Model):
                 fields=["team", "session"], name="unique_team_session"
             )
         ]
+        ordering = ["team", "session"]
+        verbose_name = "팀 세션"
+        verbose_name_plural = "팀 세션"
 
 
 class MemberSessionMembership(models.Model):
@@ -50,3 +58,8 @@ class MemberSessionMembership(models.Model):
 
     def __str__(self) -> str:
         return f"{self.memberSession} - {self.member}({self.index})"
+    
+    class Meta:
+        ordering = ["memberSession", "index"]
+        verbose_name = "팀 세션별 멤버"
+        verbose_name_plural = "팀 세션별 멤버"

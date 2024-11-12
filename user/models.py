@@ -100,3 +100,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def __str__(self) -> str:
         generation = f"({self.generation})" if self.generation else ""
         return f"{self.name}{generation}"
+    
+    class Meta:
+        ordering = ["generation__order", "name"]
+        verbose_name = "유저"
+        verbose_name_plural = "유저"

@@ -19,3 +19,8 @@ class Session(models.Model):
 
     def __str__(self) -> str:
         return self.name
+    
+    class Meta:
+        ordering = ["name"]
+        verbose_name = "세션"
+        verbose_name_plural = "세션"

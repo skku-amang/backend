@@ -8,6 +8,7 @@ from core.serializers.performance import PerformanceSerializer
 from core.views.filters import PerformanceFilter
 
 
+# ===== Basic CRUD views for Performance =====
 class PerformanceListCreateAPIView(ListCreateAPIView):
     queryset = Performance.objects.all()
     serializer_class = PerformanceSerializer
@@ -29,6 +30,7 @@ class PerformanceRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
         return [IsAdminUser()]
 
 
+# ===== Custom views for Performance =====
 class PerformanceTeamListAPIView(ListAPIView):
     serializer_class = TeamSerializer
 
