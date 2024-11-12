@@ -40,18 +40,20 @@ class PositionChoices(Enum):
 class UserManager(BaseUserManager):
     use_in_migrations = True
 
-    def create_user(self, email, password):
+    def create_user(self, email, password, generation):
         if not email:
             raise ValueError("must have user email")
         user = self.model(email=self.normalize_email(email))
         user.set_password(password)
+        user.generation = generation
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, password):
+    def create_superuser(self, email, password, generation):
         user = self.create_user(
             email=self.normalize_email(email),
             password=password,
+            generation=generation,
         )
         user.is_admin = True
         user.is_superuser = True
@@ -83,7 +85,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     bio = models.TextField(blank=True)
     image = models.ImageField(blank=True)
     generation = models.ForeignKey(
-        "core.Generation", null=False, on_delete=models.PROTECT
+        "core.Generation", null=True, on_delete=models.PROTECT
     )
     sessions = models.ManyToManyField("core.Session", related_name="users")
     position = models.CharField(
@@ -91,7 +93,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         choices=PositionChoices.choices(),
         default=PositionChoices.일반,
     )
-    department = models.ForeignKey(Department, null=True, on_delete=models.PROTECT)
+    department = models.ForeignKey(Department, null=True, blank=True, on_delete=models.PROTECT)
     createdDatetime = models.DateTimeField(auto_now_add=True)
     updatedDatetime = models.DateTimeField(auto_now=True)
 
