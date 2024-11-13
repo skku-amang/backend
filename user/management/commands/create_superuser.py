@@ -22,7 +22,7 @@ class Command(BaseCommand):
         try:
             if not User.objects.filter(email=email).exists():
                 default_generation, created = Generation.objects.get_or_create(order=1)
-                User.objects.create_superuser(email=email, password=password, generation=default_generation)
+                User.objects.create_superuser(email=email, password=password, name="admin", nickname="admin", generation=default_generation)
                 self.stdout.write(
                     self.style.SUCCESS(f"Superuser {email} created successfully.")
                 )

@@ -3,7 +3,7 @@ from django.db import models
 
 class Feedback(models.Model):
     performance = models.OneToOneField(
-        "core.Performance", on_delete=models.CASCADE, related_name="feedback"
+        "core.Performance", on_delete=models.CASCADE, related_name="feedback", verbose_name="공연"
     )
     createdDatetime = models.DateTimeField(auto_now_add=True)
     updatedDatetime = models.DateTimeField(auto_now=True)
@@ -42,6 +42,9 @@ class FeedbackQuestion(models.Model):
     createdDatetime = models.DateTimeField(auto_now_add=True)
     updatedDatetime = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return f"{self.feedback} 질문{self.order}: {self.question}"
+
     class Meta:
         ordering = ["-createdDatetime"]
         verbose_name = "피드백 질문"
@@ -53,9 +56,12 @@ class FeedbackAnswer(models.Model):
         FeedbackQuestion, on_delete=models.CASCADE, related_name="answers"
     )
     answer = models.TextField()
-    user = models.ForeignKey("user.CustomUser", on_delete=models.CASCADE)
+    respondent = models.ForeignKey("user.CustomUser", on_delete=models.CASCADE, verbose_name="답변자")
     createdDatetime = models.DateTimeField(auto_now_add=True)
     updatedDatetime = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.question} - {self.respondent}: {self.answer}"
 
     class Meta:
         ordering = ["-createdDatetime"]
