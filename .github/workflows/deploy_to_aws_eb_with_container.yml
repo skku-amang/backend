@@ -37,7 +37,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
         run: |
-          eb init -p docker Amang --region ${{ secrets.AWS_REGION }}
+          eb init -p docker amang-backend --region ${{ secrets.AWS_REGION }}
           eb use production
 
       - name: Deploy to Elastic Beanstalk
