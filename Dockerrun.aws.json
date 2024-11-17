@@ -1,0 +1,17 @@
+{
+  "AWSEBDockerrunVersion": "1",
+  "Image": {
+    "Name": "ghcr.io/skku-amang/amang-homepage-backend:latest",
+    "Update": "true"
+  },
+  "Ports": [
+    {
+      "ContainerPort": "8000"
+    }
+  ],
+  "Command": [
+    "sh",
+    "-c",
+    "python manage.py migrate && python manage.py collectstatic --noinput && gunicorn --bind :0.0.0.08000 main.wsgi:application"
+  ]
+}
