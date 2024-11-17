@@ -2,6 +2,8 @@ import os
 from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
 
+from core.models.generation import Generation
+
 
 class Command(BaseCommand):
     help = "Create a superuser if none exists"
@@ -19,7 +21,8 @@ class Command(BaseCommand):
         
         try:
             if not User.objects.filter(email=email).exists():
-                User.objects.create_superuser(email=email, password=password)
+                default_generation, created = Generation.objects.get_or_create(order=1)
+                User.objects.create_superuser(email=email, password=password, name="admin", nickname="admin", generation=default_generation)
                 self.stdout.write(
                     self.style.SUCCESS(f"Superuser {email} created successfully.")
                 )

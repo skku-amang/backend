@@ -6,6 +6,8 @@ from django.contrib.auth.models import (
 )
 from django.db import models
 
+from core.models.generation import Generation
+
 
 class Department(models.Model):
     CHOICES = [
@@ -40,18 +42,38 @@ class PositionChoices(Enum):
 class UserManager(BaseUserManager):
     use_in_migrations = True
 
-    def create_user(self, email, password):
+    def create_user(
+        self,
+        email: str,
+        password: str,
+        name: str,
+        nickname: str,
+        generation: int | Generation,
+    ):
         if not email:
             raise ValueError("must have user email")
         user = self.model(email=self.normalize_email(email))
         user.set_password(password)
+        user.name = name
+        user.nickname = nickname
+        user.generation = generation
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, password):
+    def create_superuser(
+        self,
+        email: str,
+        password: str,
+        name: str,
+        nickname: str,
+        generation: int | Generation,
+    ):
         user = self.create_user(
             email=self.normalize_email(email),
             password=password,
+            name=name,
+            nickname=nickname,
+            generation=generation,
         )
         user.is_admin = True
         user.is_superuser = True
@@ -61,15 +83,10 @@ class UserManager(BaseUserManager):
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
-    BLANK_USER_ID = 0
-    BLANK_USER_EMAIL = "blank@blank.blank"
-    BLANK_USER_NICKNAME = " "
-
-    objects = UserManager()
-
     email = models.EmailField(
         max_length=255,
         unique=True,
+        verbose_name="이메일",
     )
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
@@ -78,23 +95,37 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
-    name = models.CharField(max_length=20)
-    nickname = models.CharField(max_length=20, unique=True)
-    bio = models.TextField(blank=True)
-    image = models.ImageField(blank=True)
-    generation = models.ForeignKey(
-        "core.Generation", null=False, on_delete=models.PROTECT
+    name = models.CharField(max_length=20, blank=False, verbose_name="이름")
+    nickname = models.CharField(
+        max_length=20, unique=True, blank=False, verbose_name="닉네임"
     )
-    sessions = models.ManyToManyField("core.Session", related_name="users")
+    bio = models.TextField(blank=True, verbose_name="소개")
+    image = models.ImageField(blank=True, null=True, verbose_name="프로필 이미지")
+    generation = models.ForeignKey(
+        "core.Generation", null=True, on_delete=models.PROTECT, verbose_name="기수"
+    )
+    sessions = models.ManyToManyField(
+        "core.Session", related_name="users", verbose_name="세션"
+    )
     position = models.CharField(
         max_length=30,
         choices=PositionChoices.choices(),
         default=PositionChoices.일반,
+        verbose_name="직책",
     )
-    department = models.ForeignKey(Department, null=True, on_delete=models.PROTECT)
-    createdDatetime = models.DateTimeField(auto_now_add=True)
-    updatedDatetime = models.DateTimeField(auto_now=True)
+    department = models.ForeignKey(
+        Department, null=True, blank=True, on_delete=models.PROTECT, verbose_name="부서"
+    )
+    createdDatetime = models.DateTimeField(auto_now_add=True, verbose_name="생성 일시")
+    updatedDatetime = models.DateTimeField(auto_now=True, verbose_name="수정 일시")
+
+    objects = UserManager()
 
     def __str__(self) -> str:
         generation = f"({self.generation})" if self.generation else ""
         return f"{self.name}{generation}"
+
+    class Meta:
+        ordering = ["generation__order", "name"]
+        verbose_name = "유저"
+        verbose_name_plural = "유저"

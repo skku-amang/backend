@@ -1,5 +1,6 @@
 from django.urls import path
-from .views import generation, performance, session, team
+from .views import generation, performance, session, team, feedback
+
 
 urlpatterns = [
     # Generation
@@ -51,4 +52,16 @@ urlpatterns = [
         name="team-retrieve_update_destroy",
     ),
     path("teams/<int:pk>/apply/", team.TeamApplyAPIView.as_view(), name="team-apply"),
+
+    # Feedback
+    path(
+        "feedbacks/",
+        feedback.FeedbackListCreateAPIView.as_view(),
+        name="feedback-list_create",
+    ),
+    path(
+        "feedbacks/<int:pk>/",
+        feedback.FeedbackRetrieveUpdateDestroyAPIView.as_view(),
+        name="feedback-retrieve_update_destroy",
+    ),
 ]
