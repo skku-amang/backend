@@ -39,3 +39,8 @@ class GenerationRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
             return Generation.objects.get(order=decimal_pk)
         except Generation.DoesNotExist:
             raise NotFound("Generation does not exist")
+    
+    def perform_destroy(self, instance):
+        if instance.users.exists():
+            raise ValidationError("Generation has users")
+        instance.delete()

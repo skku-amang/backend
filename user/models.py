@@ -102,7 +102,11 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     bio = models.TextField(blank=True, verbose_name="소개")
     image = models.ImageField(blank=True, null=True, verbose_name="프로필 이미지")
     generation = models.ForeignKey(
-        "core.Generation", null=True, on_delete=models.PROTECT, verbose_name="기수"
+        "core.Generation",
+        null=True,
+        on_delete=models.PROTECT,
+        verbose_name="기수",
+        related_name="users",
     )
     sessions = models.ManyToManyField(
         "core.Session", related_name="users", verbose_name="세션"

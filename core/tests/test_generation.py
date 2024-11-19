@@ -10,25 +10,26 @@ class GenerationTests(APITestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+        cls.generation = Generation.objects.create(order=Decimal("35.5"))
 
         User = get_user_model()
         # 관리자 사용자 생성
         cls.admin_user = User.objects.create_superuser(
             email="admin@admin.com",
             password="adminpassword",
+            name="admin",
+            nickname="admin",
+            generation=cls.generation
         )
-        cls.admin_user.nickname = "admin"
-        cls.admin_user.save()
 
         # 일반 사용자 생성
         cls.normal_user = User.objects.create_user(
             email="user@user.com",
             password="userpassword",
+            name="user",
+            nickname="user",
+            generation=cls.generation,
         )
-        cls.normal_user.nickname = "user"
-        cls.normal_user.save()
-
-        cls.generation = Generation.objects.create(order=Decimal("35.5"), leader=cls.admin_user)
 
         # URL 설정
         cls.list_create_url = reverse("generation-list_create")
@@ -96,11 +97,10 @@ class GenerationTests(APITestCase):
         response = self.client.put(self.detail_url, self.data, format="json")
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
-    def test_delete_generation_as_admin(self):
+    def test_delete_referenced_generation_raises_bad_request(self):
         self.authenticate(self.admin_user)
         response = self.client.delete(self.detail_url)
-        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-        self.assertFalse(Generation.objects.filter(order=Decimal("35.5")).exists())
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_delete_generation_as_non_admin(self):
         self.authenticate(self.normal_user)
