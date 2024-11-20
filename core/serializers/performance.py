@@ -5,7 +5,7 @@ from ..models.performance import Performance
 
 
 class PerformanceSerializer(serializers.ModelSerializer):
-    feedback = FeedbackSerializer()
+    feedback = FeedbackSerializer(required=False)
     
     class Meta:
         model = Performance
