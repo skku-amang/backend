@@ -2,7 +2,7 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIV
 from rest_framework.permissions import IsAdminUser
 
 from ..models.feedback import Feedback
-from ..serializers.feedback import FeedbackSerializer, FeedbackQuestionSerializer, FeedbackAnswerSerializer
+from ..serializers.feedback import FeedbackSerializer
 
 
 class FeedbackListCreateAPIView(ListCreateAPIView):

@@ -6,6 +6,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from core.models.generation import Generation
 from django.contrib.auth import get_user_model
 
+
 class GenerationTests(APITestCase):
     @classmethod
     def setUpClass(cls):
