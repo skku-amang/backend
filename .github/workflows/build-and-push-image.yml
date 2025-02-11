@@ -1,4 +1,4 @@
-name: Build Image
+name: Build and Push Image
 
 on:
   push:
@@ -32,4 +32,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/amang-homepage-backend:latest
+          tags: ghcr.io/${{ github.repository_owner }}/${{ github.repository }}:latest
