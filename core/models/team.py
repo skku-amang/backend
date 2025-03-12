@@ -13,7 +13,7 @@ class Team(models.Model):
     # Song
     songName = models.CharField(max_length=50, blank=True, verbose_name="곡 명")
     songArtist = models.CharField(max_length=50, blank=True, verbose_name="아티스트")
-    songYoutubeVideoId = models.CharField(max_length=50, blank=True, verbose_name="유튜브 비디오 ID")
+    songYoutubeVideoUrl = models.CharField(max_length=50, blank=True, verbose_name="유튜브 비디오 ID")
 
     createdDatetime = models.DateTimeField(auto_now_add=True, verbose_name="생성 일시")
     updatedDatetime = models.DateTimeField(auto_now=True, verbose_name="수정 일시")

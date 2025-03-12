@@ -65,11 +65,15 @@ class TeamTests(APITestCase):
             "posterImage": None,
             "songName": "Test Song",
             "songArtist": "Test Artist",
-            "songYoutubeVideoId": "vNePhmCMnbU",  # do you like beaver?
+            "songYoutubeVideoUrl": "vNePhmCMnbU",  # do you like beaver?
         }
         cls.team = Team.objects.create(**data)
-        ms = MemberSession.objects.create(team=cls.team, session=Session.objects.create(name="보컬"))
-        MemberSessionMembership.objects.create(memberSession=ms, member=cls.leader, index=0)
+        ms = MemberSession.objects.create(
+            team=cls.team, session=Session.objects.create(name="보컬")
+        )
+        MemberSessionMembership.objects.create(
+            memberSession=ms, member=cls.leader, index=0
+        )
         MemberSessionMembership.objects.create(memberSession=ms, member=None, index=1)
         MemberSessionMembership.objects.create(memberSession=ms, member=None, index=2)
 
@@ -135,15 +139,22 @@ class TeamTests(APITestCase):
                 vocalMemberSession = ms
                 break
         self.assertEqual(vocalMemberSession["session"], session)
-        self.assertEqual(vocalMemberSession["members"][index]["id"], self.other_team_normal_user.id)
-    
+        self.assertEqual(
+            vocalMemberSession["members"][index]["id"], self.other_team_normal_user.id
+        )
+
     def test_apply_team_with_bulk(self):
         self.authenticate(self.other_team_normal_user)
         session = "보컬"
         index = 1
         response = self.client.post(
             self.apply_url,
-            {"applications": [{"session": session, "index": index}, {"session": session, "index": index + 1}]},
+            {
+                "applications": [
+                    {"session": session, "index": index},
+                    {"session": session, "index": index + 1},
+                ]
+            },
             format="json",
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -153,8 +164,13 @@ class TeamTests(APITestCase):
                 vocalMemberSession = ms
                 break
         self.assertEqual(vocalMemberSession["session"], session)
-        self.assertEqual(vocalMemberSession["members"][index]["id"], self.other_team_normal_user.id)
-        self.assertEqual(vocalMemberSession["members"][index + 1]["id"], self.other_team_normal_user.id)
+        self.assertEqual(
+            vocalMemberSession["members"][index]["id"], self.other_team_normal_user.id
+        )
+        self.assertEqual(
+            vocalMemberSession["members"][index + 1]["id"],
+            self.other_team_normal_user.id,
+        )
 
     def test_apply_team_with_invalid_session(self):
         self.authenticate(self.other_team_normal_user)
@@ -166,7 +182,9 @@ class TeamTests(APITestCase):
             format="json",
         )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response.data["session"], f"{session}는 존재하지 않는 session 입니다.")
+        self.assertEqual(
+            response.data["session"], f"{session}는 존재하지 않는 session 입니다."
+        )
 
     def test_apply_team_with_invalid_index(self):
         self.authenticate(self.other_team_normal_user)
@@ -178,7 +196,7 @@ class TeamTests(APITestCase):
             format="json",
         )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-    
+
     def test_apply_team_with_already_registered_user(self):
         self.authenticate(self.other_team_normal_user)
         session = "보컬"
