@@ -30,10 +30,7 @@ COPY --from=builder /app/wheels /wheels
 RUN pip install --no-cache-dir --no-index --find-links=/wheels/ /wheels/* \
   && rm -rf /wheels
 
-# 필요한 파일만 복사
-COPY ./main /app/main
-COPY ./apps /app/apps
-COPY ./manage.py /app/
+COPY . /app
 
 # 보안을 위해 루트가 아닌 사용자로 실행
 RUN useradd -m appuser
