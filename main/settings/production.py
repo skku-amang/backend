@@ -4,7 +4,7 @@ from . import base
 
 BASE_DIR = base.BASE_DIR
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
-DEBUG = os.environ.get("DJANGO_DEBUG", False)
+DEBUG = False
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(",")
 
 # Application definition
@@ -64,20 +64,28 @@ STORAGES = {
         "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
     },
 }
-AWS_S3_ACCESS_KEY_ID = os.environ.get("AWS_S3_ACCESS_KEY_ID")
-AWS_S3_SECRET_ACCESS_KEY = os.environ.get("AWS_S3_SECRET_ACCESS_KEY")
+# DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+# STATICFILES_STORAGE = "storages.backends.s3boto3.S3StaticStorage"
+
+# MinIO 설정
 AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME")
-AWS_REGION = os.environ.get("AWS_REGION")
-AWS_S3_CUSTOM_DOMAIN = AWS_STORAGE_BUCKET_NAME + f".s3.{AWS_REGION}.amazonaws.com"
+AWS_STATIC_BUCKET_NAME = os.environ.get("AWS_STATIC_BUCKET_NAME")
+AWS_S3_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
+AWS_S3_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
+AWS_S3_ENDPOINT_URL = os.environ.get("AWS_S3_ENDPOINT_URL")
+AWS_S3_REGION_NAME = os.environ.get(
+    "AWS_S3_REGION_NAME"
+)  # 미니오는 지역을 무시하지만 필요함
+
+# S3 옵션
+AWS_DEFAULT_ACL = "public-read"
 AWS_QUERYSTRING_AUTH = False
+AWS_S3_SIGNATURE_VERSION = "s3v4"
+AWS_S3_FILE_OVERWRITE = False
 
-
-# Static files (CSS, JavaScript, Images)
-STATIC_URL = base.STATIC_URL
-MEDIA_URL = base.MEDIA_URL
-STATICFILES_DIRS = base.STATICFILES_DIRS
-STATIC_ROOT = base.STATIC_ROOT
-MEDIA_ROOT = base.MEDIA_ROOT
+# 미디어와 스태틱 URL 설정
+STATIC_URL = f"{AWS_S3_ENDPOINT_URL}/{AWS_STATIC_BUCKET_NAME}/"
+MEDIA_URL = f"{AWS_S3_ENDPOINT_URL}/{AWS_STORAGE_BUCKET_NAME}/"
 
 
 # CORS
