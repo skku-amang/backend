@@ -2,12 +2,15 @@ FROM python:3.11-slim AS builder
 
 WORKDIR /app
 
-# 빌드 의존성 설치
+# 빌드 의존성 설치 - pkg-config와 libdbus-1-dev 추가
 RUN apt-get update && \
   apt-get install -y --no-install-recommends \
   gcc \
   python3-dev \
   libpq-dev \
+  pkg-config \
+  libdbus-1-dev \
+  file \
   && rm -rf /var/lib/apt/lists/*
 
 # Pip 패키지 설치
@@ -19,9 +22,10 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# 런타임 라이브러리만 설치
+# 런타임 라이브러리 설치 - libdbus-1-3 추가
 RUN apt-get update && apt-get install -y --no-install-recommends \
   libpq5 \
+  libdbus-1-3 \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
@@ -38,4 +42,4 @@ USER appuser
 
 EXPOSE 8000
 
-ENTRYPOINT ["/app/entrypoint.sh"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "main.wsgi:application"]

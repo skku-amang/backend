@@ -62,6 +62,10 @@ REST_FRAMEWORK = {
         # 'rest_framework.permissions.IsAdminUser', # 관리자만 접근
         # "rest_framework.permissions.AllowAny",  # 누구나 접근
     ),
+    "DEFAULT_RENDERER_CLASSES": [
+        "rest_framework.renderers.JSONRenderer",
+        "rest_framework.renderers.BrowsableAPIRenderer",  # 개발 중에만 필요
+    ],
 }
 
 
